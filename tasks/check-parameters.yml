@@ -15,3 +15,19 @@
     fail_msg: "parameter 'encryption_mode' must be one of these values: ['repokey', 'repokey-blake2']"
   when: encryption_passphrase is defined
     and encryption_passphrase | length > 0
+
+- name: check 'archive' parameter
+  assert:
+    that:
+      - "archive is defined"
+      - "archive | length > 0"
+    fail_msg: "parameter 'archive' is missing"
+
+- name: check 'private_working_directory' parameter
+  assert:
+    that:
+      - "private_working_directory is defined"
+      - "private_working_directory | length > 0"
+    fail_msg: "parameter 'private_working_directory' is missing"
+  when: encryption_passphrase is defined
+    and encryption_passphrase | length > 0

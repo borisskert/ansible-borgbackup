@@ -1,0 +1,33 @@
+---
+- name: Create borgbackup service
+  template:
+    src: borgbackup.service.j2
+    dest: "/etc/systemd/system/borgbackup.service"
+    owner: root
+    group: root
+    mode: 0644
+  register: systemd_service
+
+- name: Create borgbackup timer
+  template:
+    src: borgbackup.timer.j2
+    dest: "/etc/systemd/system/borgbackup.timer"
+    owner: root
+    group: root
+    mode: 0644
+  register: systemd_timer
+
+- name: Reload systemd
+  command: systemctl daemon-reload
+  when: systemd_service.changed or systemd_timer.changed
+
+- name: Setup borgbackup service
+  service:
+    name: "borgbackup.service"
+    enabled: yes
+
+- name: Setup borgbackup timer
+  systemd:
+    name: "borgbackup.timer"
+    state: started
+    enabled: yes

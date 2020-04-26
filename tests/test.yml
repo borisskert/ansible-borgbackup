@@ -7,3 +7,8 @@
       repo_path: /mnt/borgbackups
       encryption_mode: repokey
       encryption_passphrase: "thi5 is-mY_p@5sphr4s3"
+      private_working_directory: /srv/borgbackup
+      archive: MyArchive
+      paths:
+        - /etc
+        - /home

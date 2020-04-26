@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+{% if passphrase_file is defined and passphrase_file | length > 0 %}
+export BORG_PASSPHRASE=$(cat "{{passphrase_file}}")
+{% endif %}
+
+{{borg_executible}} create \
+            --stats \
+            --compression {{compression_mode}} \
+            {{repo_path}}::{{archive}}-`date +%s` \
+            {% for path in paths %}"{{path}}" {% endfor %}

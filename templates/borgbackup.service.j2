@@ -1,0 +1,8 @@
+[Unit]
+Description=borgbackup service
+
+[Service]
+ExecStart=/opt/borgbackup/borgbackup.bash
+
+Restart=no
+TimeoutSec=3600

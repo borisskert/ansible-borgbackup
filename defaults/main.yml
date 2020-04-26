@@ -1,4 +1,10 @@
 ---
 repo_path: ''
 encryption_mode: repokey-blake2
-ecryption_passphrase: ''
+encryption_passphrase: ''
+compression_mode: none
+
+borg_executible: /usr/bin/borg
+
+private_working_directory: ''
+passphrase_file: "{{private_working_directory}}/passphrase.txt"
