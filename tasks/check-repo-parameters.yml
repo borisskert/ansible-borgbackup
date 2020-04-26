@@ -1,0 +1,53 @@
+---
+- name: check 'item' parameter
+  assert:
+    that:
+      - "item is defined"
+    fail_msg: "parameter 'item' is not defined"
+
+- name: check 'repo_path' parameter
+  assert:
+    that:
+      - "item.repo_path is defined"
+      - "item.repo_path | length > 0"
+    fail_msg: "parameter 'item.repo_path' is missing"
+
+- name: check 'encryption_mode' parameter
+  assert:
+    that:
+      - "item.encryption_mode is defined"
+      - "item.encryption_mode | length > 0"
+      - "item.encryption_mode == 'repokey' or item.encryption_mode == 'repokey-blake2'"
+    fail_msg: "parameter 'repo.encryption_mode' must be one of these values: ['repokey', 'repokey-blake2']"
+  when: item.encryption_passphrase is defined
+    and item.encryption_passphrase | length > 0
+
+- name: check 'private_working_directory' parameter
+  assert:
+    that:
+      - "private_working_directory is defined"
+      - "private_working_directory | length > 0"
+    fail_msg: "parameter 'private_working_directory' is missing"
+  when: item.encryption_passphrase is defined
+    and item.encryption_passphrase | length > 0
+
+- name: check 'archive' parameter
+  assert:
+    that:
+      - "item.archive is defined"
+      - "item.archive | length > 0"
+    fail_msg: "parameter 'item.archive' is missing"
+
+- name: check 'paths' parameter
+  assert:
+    that:
+      - "item.paths is defined"
+      - "item.paths | length > 0"
+    fail_msg: "parameter 'item.paths' is missing or empty"
+
+- name: check 'compression_mode' parameter
+  assert:
+    that:
+      - "item.compression_mode is defined"
+      - "item.compression_mode | length > 0"
+    fail_msg: "parameter 'item.compression_mode' is missing"

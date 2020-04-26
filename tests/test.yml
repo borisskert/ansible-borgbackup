@@ -4,11 +4,25 @@
 
   roles:
     - role: setup-borgbackup
-      repo_path: /mnt/borgbackups
-      encryption_mode: repokey
-      encryption_passphrase: "thi5 is-mY_p@5sphr4s3"
       private_working_directory: /srv/borgbackup
-      archive: MyArchive
-      paths:
-        - /etc
-        - /home
+      repos:
+        - repo_path: /mnt/borgbackups/etc-backups
+          encryption_mode: repokey
+          encryption_passphrase: "thi5 is-mY_p@5sphr4s3 for /etc"
+          archive: etc-archive
+          compression_mode: lzma,4
+          paths:
+            - /etc
+        - repo_path: /mnt/borgbackups/home-and-root-backups
+          encryption_mode: repokey-blake2
+          encryption_passphrase: "thi5 is-mY_p@5sphr4s3 for /home and /root"
+          archive: home-and-root-archive
+          compression_mode: none
+          paths:
+            - /home
+            - /root
+        - repo_path: /mnt/borgbackups/opt-backups
+          archive: opt-archive
+          compression_mode: none
+          paths:
+            - /opt

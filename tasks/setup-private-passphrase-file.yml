@@ -6,11 +6,15 @@
     owner: root
     group: root
     mode: 0700
+  when: item.encryption_passphrase is defined
+    and item.encryption_passphrase | length > 0
 
 - name: Setup passphrase file
   copy:
-    dest: "{{passphrase_file}}"
-    content: "{{encryption_passphrase}}"
+    dest: "{{private_working_directory}}/{{item.archive}}.txt"
+    content: "{{item.encryption_passphrase}}"
     owner: root
     group: root
     mode: 0600
+  when: item.encryption_passphrase is defined
+    and item.encryption_passphrase | length > 0

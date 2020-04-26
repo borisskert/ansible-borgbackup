@@ -9,6 +9,10 @@
     update_cache: yes
 
 - include: create-repo.yml
+  with_items: "{{repos}}"
+
 - include: setup-private-passphrase-file.yml
+  with_items: "{{repos}}"
+
 - include: setup-borgbackup-script.yml
 - include: setup-systemd-service.yml

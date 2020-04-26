@@ -1,7 +1,7 @@
 ---
 - name: Create repo directory
   file:
-    path: "{{repo_path}}"
+    path: "{{item.repo_path}}"
     state: directory
     owner: root
     group: root
@@ -9,13 +9,13 @@
   register: repo_creation
 
 - name: Init encrypted repo
-  shell: 'export BORG_PASSPHRASE="{{encryption_passphrase}}"; borg init --encryption {{encryption_mode}} "{{repo_path}}"'
+  shell: 'export BORG_PASSPHRASE="{{item.encryption_passphrase}}"; borg init --encryption {{item.encryption_mode}} "{{item.repo_path}}"'
   when: repo_creation.changed
-    and encryption_passphrase is defined
-    and encryption_passphrase | length > 0
+    and item.encryption_passphrase is defined
+    and item.encryption_passphrase | length > 0
 
 - name: Init unencrypted repo
-  shell: 'borg init --encryption none "{{repo_path}}"'
+  shell: 'borg init --encryption none "{{item.repo_path}}"'
   when: repo_creation.changed
-    and (encryption_passphrase is not defined
-    or encryption_passphrase | length < 1)
+    and (item.encryption_passphrase is not defined
+    or item.encryption_passphrase | length < 1)
