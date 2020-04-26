@@ -1,5 +1,6 @@
 ---
 - include: check-parameters.yml
+  no_log: False
 
 - name: Create repo directory
   file:
@@ -8,9 +9,22 @@
     owner: root
     group: root
     mode: 0755
+  register: repo_creation
 
 - name: install package
   apt:
     name: borgbackup
     state: latest
     update_cache: yes
+
+- name: Init encrypted repo
+  shell: 'export BORG_PASSPHRASE="{{encryption_passphrase}}"; borg init --encryption {{encryption_mode}} {{repo_path}}'
+  when: repo_creation.changed
+    and encryption_passphrase is defined
+    and encryption_passphrase | length > 0
+
+- name: Init unencrypted repo
+  shell: "borg init --encryption none {{repo_path}}"
+  when: repo_creation.changed
+    and (encryption_passphrase is not defined
+    or encryption_passphrase | length < 1)

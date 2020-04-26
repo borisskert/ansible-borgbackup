@@ -5,3 +5,13 @@
       - "repo_path is defined"
       - "repo_path | length > 0"
     fail_msg: "parameter 'repo_path' is missing"
+
+- name: check 'encryption_mode' parameter
+  assert:
+    that:
+      - "encryption_mode is defined"
+      - "encryption_mode | length > 0"
+      - "encryption_mode == 'repokey' or encryption_mode == 'repokey-blake2'"
+    fail_msg: "parameter 'encryption_mode' must be one of these values: ['repokey', 'repokey-blake2']"
+  when: encryption_passphrase is defined
+    and encryption_passphrase | length > 0

@@ -1,2 +1,4 @@
 ---
 repo_path: ''
+encryption_mode: repokey-blake2
+ecryption_passphrase: ''
