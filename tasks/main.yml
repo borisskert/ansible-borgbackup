@@ -5,9 +5,14 @@
 - include: install/main.yml
 
 - include: create-repos.yml
+  when: repos is defined and repos | length > 0
 
 - include: setup-private-passphrase-file.yml
   with_items: "{{repos}}"
+  when: repos is defined and repos | length > 0
 
 - include: setup-borgbackup-script.yml
+  when: repos is defined and repos | length > 0
+
 - include: setup-systemd-service.yml
+  when: repos is defined and repos | length > 0
