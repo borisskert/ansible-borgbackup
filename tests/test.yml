@@ -9,20 +9,28 @@
         - repo_path: /mnt/borgbackups/etc-backups
           encryption_mode: repokey
           encryption_passphrase: "thi5 is-mY_p@5sphr4s3 for /etc"
-          archive: etc-archive
-          compression_mode: lzma,4
-          paths:
-            - /etc
+          passphrase_filename: etc_passphrase.txt
+          archives:
+            - name: etc-archive
+              compression_mode: lzma,4
+              paths:
+                - /etc
         - repo_path: /mnt/borgbackups/home-and-root-backups
           encryption_mode: repokey-blake2
           encryption_passphrase: "thi5 is-mY_p@5sphr4s3 for /home and /root"
-          archive: home-and-root-archive
-          compression_mode: none
-          paths:
-            - /home
-            - /root
+          passphrase_filename: home_root_passphrase.txt
+          archives:
+            - name: home-archive
+              compression_mode: none
+              paths:
+                - /home
+            - name: root-archive
+              compression_mode: none
+              paths:
+                - /root
         - repo_path: /mnt/borgbackups/opt-backups
-          archive: opt-archive
-          compression_mode: none
-          paths:
-            - /opt
+          archives:
+            - name: opt-archive
+              compression_mode: none
+              paths:
+                - /opt

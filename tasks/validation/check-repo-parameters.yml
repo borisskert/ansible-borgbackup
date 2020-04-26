@@ -1,0 +1,53 @@
+---
+- name: check 'repo' parameter
+  assert:
+    that:
+      - "repo is defined"
+    fail_msg: "parameter 'repo' is not defined"
+
+- name: check 'repo_path' parameter
+  assert:
+    that:
+      - "repo.repo_path is defined"
+      - "repo.repo_path | length > 0"
+    fail_msg: "parameter 'repo.repo_path' is missing"
+
+- name: check 'encryption_mode' parameter
+  assert:
+    that:
+      - "repo.encryption_mode is defined"
+      - "repo.encryption_mode | length > 0"
+      - "repo.encryption_mode == 'repokey' or repo.encryption_mode == 'repokey-blake2'"
+    fail_msg: "parameter 'repo.encryption_mode' must be one of these values: ['repokey', 'repokey-blake2']"
+  when: repo.encryption_passphrase is defined
+    and repo.encryption_passphrase | length > 0
+
+- name: check 'passphrase_filename' parameter
+  assert:
+    that:
+      - "repo.passphrase_filename is defined"
+      - "repo.passphrase_filename | length > 0"
+    fail_msg: "parameter 'repo.passphrase_filename' is missing"
+  when: repo.encryption_passphrase is defined
+    and repo.encryption_passphrase | length > 0
+
+- name: check 'private_working_directory' parameter
+  assert:
+    that:
+      - "private_working_directory is defined"
+      - "private_working_directory | length > 0"
+    fail_msg: "parameter 'private_working_directory' is missing"
+  when: repo.encryption_passphrase is defined
+    and repo.encryption_passphrase | length > 0
+
+- name: check 'archives' parameter
+  assert:
+    that:
+      - "repo.archives is defined"
+      - "repo.archives | length > 0"
+    fail_msg: "parameter 'repo.archives' is missing or empty"
+
+- include: check-archive-parameters.yml
+  loop: "{{repo.archives}}"
+  loop_control:
+    loop_var: archive

@@ -1,15 +1,21 @@
 #!/bin/bash
 set -e
 {% for repo in repos %}
+# ------------------------------------------------------------------------------------------
 
 {% if repo.encryption_passphrase is defined and repo.encryption_passphrase | length > 0 %}
-export BORG_PASSPHRASE=$(cat "{{private_working_directory}}/{{repo.archive}}.txt")
+export BORG_PASSPHRASE=$(cat "{{private_working_directory}}/{{repo.passphrase_filename}}")
 {% endif %}
+{% for archive in repo.archives %}
+
 {{borg_executible}} create \
             --stats \
-            --compression {{repo.compression_mode}} \
-            {{repo.repo_path}}::{{repo.archive}}-`date +%s` \
-            {% for path in repo.paths %}"{{path}}" {% endfor %}
+            --compression {{archive.compression_mode}} \
+            {{repo.repo_path}}::{{archive.name}}-`date +%s` \
+            {% for path in archive.paths %}"{{path}}" {% endfor %}
 
 
 {% endfor %}
+
+{% endfor %}
+# ------------------------------------------------------------------------------------------

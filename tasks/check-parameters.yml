@@ -1,3 +1,0 @@
----
-- include: check-repo-parameters.yml
-  with_items: "{{repos}}"

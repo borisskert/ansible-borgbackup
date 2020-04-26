@@ -11,7 +11,7 @@
 
 - name: Setup passphrase file
   copy:
-    dest: "{{private_working_directory}}/{{item.archive}}.txt"
+    dest: "{{private_working_directory}}/{{item.passphrase_filename}}"
     content: "{{item.encryption_passphrase}}"
     owner: root
     group: root

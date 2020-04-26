@@ -1,5 +1,5 @@
 ---
-- include: check-parameters.yml
+- include: validation/check-parameters.yml
   no_log: False
 
 - name: install package
@@ -15,4 +15,4 @@
   with_items: "{{repos}}"
 
 - include: setup-borgbackup-script.yml
-- include: setup-systemd-service.yml
+#- include: setup-systemd-service.yml
