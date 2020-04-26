@@ -14,7 +14,12 @@ export BORG_PASSPHRASE=$(cat "{{private_working_directory}}/{{repo.passphrase_fi
             {{repo.repo_path}}::{{archive.name}}-`date +%s` \
             {% for path in archive.paths %}"{{path}}" {% endfor %}
 
-
+{% if repo.prune is defined %}
+{{borg_executible}} prune \
+            --list \
+            {{repo.repo_path}} \
+            {% if repo.prune.keep_within is defined %}--keep-within={{repo.prune.keep_within}} {% endif %}{% if repo.prune.keep_daily is defined %}--keep-daily={{repo.prune.keep_daily}} {% endif %}{% if repo.prune.keep_weekly is defined %}--keep-weekly={{repo.prune.keep_weekly}} {% endif %}{% if repo.prune.keep_monthly is defined %}--keep-monthly={{repo.prune.keep_monthly}}{% endif %}
+{% endif %}
 {% endfor %}
 
 {% endfor %}

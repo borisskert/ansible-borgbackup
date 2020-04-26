@@ -1,0 +1,34 @@
+---
+- name: check 'prune' parameter
+  assert:
+    that:
+      - "prune is defined"
+    fail_msg: "parameter 'prune' is missing"
+
+- name: check 'prune.keep_within' parameter
+  assert:
+    that:
+      - "prune.keep_within | length > 0"
+    fail_msg: "parameter 'prune.keep_within' is invalid"
+  when: prune.keep_within is defined
+
+- name: check 'prune.keep_daily' parameter
+  assert:
+    that:
+      - "prune.keep_daily > 0"
+    fail_msg: "parameter 'prune.keep_daily' is invalid"
+  when: prune.keep_daily is defined
+
+- name: check 'prune.keep_weekly' parameter
+  assert:
+    that:
+      - "prune.keep_weekly > 0"
+    fail_msg: "parameter 'prune.keep_weekly' is invalid"
+  when: prune.keep_weekly is defined
+
+- name: check 'prune.keep_monthly' parameter
+  assert:
+    that:
+      - "prune.keep_monthly > 0"
+    fail_msg: "parameter 'prune.keep_monthly' is invalid"
+  when: prune.keep_monthly is defined

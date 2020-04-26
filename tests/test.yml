@@ -4,12 +4,18 @@
 
   roles:
     - role: setup-borgbackup
+      version: 1.1.11
       private_working_directory: /srv/borgbackup
       repos:
         - repo_path: /mnt/borgbackups/etc-backups
           encryption_mode: repokey
           encryption_passphrase: "thi5 is-mY_p@5sphr4s3 for /etc"
           passphrase_filename: etc_passphrase.txt
+          prune:
+            keep_within: 1d
+            keep_daily: 7
+            keep_weekly: 4
+            keep_monthly: 12
           archives:
             - name: etc-archive
               compression_mode: lzma,4
@@ -19,6 +25,8 @@
           encryption_mode: repokey-blake2
           encryption_passphrase: "thi5 is-mY_p@5sphr4s3 for /home and /root"
           passphrase_filename: home_root_passphrase.txt
+          prune:
+            keep_daily: 7
           archives:
             - name: home-archive
               compression_mode: none
@@ -29,6 +37,9 @@
               paths:
                 - /root
         - repo_path: /mnt/borgbackups/opt-backups
+          prune:
+            keep_weekly: 4
+            keep_monthly: 12
           archives:
             - name: opt-archive
               compression_mode: none

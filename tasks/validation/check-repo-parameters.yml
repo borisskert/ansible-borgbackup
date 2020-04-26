@@ -51,3 +51,8 @@
   loop: "{{repo.archives}}"
   loop_control:
     loop_var: archive
+
+- include: check-prune-parameters.yml
+  vars:
+    prune: "{{ repo.prune }}"
+  when: repo.prune is defined
