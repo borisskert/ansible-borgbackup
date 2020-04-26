@@ -4,3 +4,4 @@
 
   roles:
     - role: setup-borgbackup
+      repo_path: /mnt/borgbackups

@@ -1,4 +1,14 @@
 ---
+- include: check-parameters.yml
+
+- name: Create repo directory
+  file:
+    path: "{{repo_path}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
 - name: install package
   apt:
     name: borgbackup

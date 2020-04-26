@@ -1,0 +1,7 @@
+---
+- name: check 'repo_path' parameter
+  assert:
+    that:
+      - "repo_path is defined"
+      - "repo_path | length > 0"
+    fail_msg: "parameter 'repo_path' is missing"
