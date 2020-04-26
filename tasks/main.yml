@@ -4,7 +4,7 @@
 
 - include: install/main.yml
 
-- include: create-repos.yml
+- include: repo-creation/create-repos.yml
   when: repos is defined and repos | length > 0
 
 - include: setup-private-passphrase-file.yml
