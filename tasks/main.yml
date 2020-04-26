@@ -2,17 +2,12 @@
 - include: validation/check-parameters.yml
   no_log: False
 
-- name: install package
-  apt:
-    name: borgbackup
-    state: latest
-    update_cache: yes
+- include: install/main.yml
 
-- include: create-repo.yml
-  with_items: "{{repos}}"
+- include: create-repos.yml
 
 - include: setup-private-passphrase-file.yml
   with_items: "{{repos}}"
 
 - include: setup-borgbackup-script.yml
-#- include: setup-systemd-service.yml
+- include: setup-systemd-service.yml

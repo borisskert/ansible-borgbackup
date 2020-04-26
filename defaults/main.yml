@@ -1,6 +1,9 @@
 ---
-borg_executible: /usr/bin/borg
+version: ''
+borg_executible: /usr/local/bin/borg
 
 private_working_directory: ''
 
 repos: []
+
+system: linux64

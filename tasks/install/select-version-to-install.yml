@@ -1,0 +1,13 @@
+---
+- name: Estimate version to be installed (use set version)
+  set_fact:
+    version_to_be_installed: "{{ version }}"
+  when: latest_version is not defined
+
+- name: Estimate version to be installed (use latest version)
+  set_fact:
+    version_to_be_installed: "{{ latest_version }}"
+  when: latest_version is defined
+
+- debug:
+    msg: "Version planned to be installed: {{version_to_be_installed}}"

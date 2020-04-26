@@ -1,0 +1,13 @@
+---
+- include: determine-already-installed-version.yml
+- include: determine-latest-available-version.yml
+- include: select-version-to-install.yml
+
+- name: Download bin file
+  get_url:
+    url: "https://github.com/borgbackup/borg/releases/download/{{version_to_be_installed}}/borg-{{system}}"
+    dest: "{{borg_executible}}"
+    mode: 0755
+    force: yes
+  when: installed_version is not defined
+    or version_to_be_installed != installed_version

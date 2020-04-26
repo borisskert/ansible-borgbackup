@@ -34,3 +34,15 @@
               compression_mode: none
               paths:
                 - /opt
+        - repo_path: ssh://my_ssh_user@remote_server.org//home/my_remote_path
+          encryption_mode: repokey
+          encryption_passphrase: "thi5 is-mY_p@5sphr4s3"
+          passphrase_filename: remote_backup_passphrase.txt
+          archives:
+            - name: my-remote-archive
+              compression_mode: lzma,9
+              paths:
+                - /etc
+                - /home
+                - /srv
+                - /root

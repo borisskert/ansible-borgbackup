@@ -1,0 +1,13 @@
+---
+- name: Estimate latest version
+  shell: git ls-remote https://github.com/borgbackup/borg | grep refs/tags | grep -oP "[0-9]+\.[0-9]+\.[0-9]+$" | sort --version-sort | tail -n 1
+  register: latest_borg_version
+  changed_when: False
+
+- name: Use estimated version
+  set_fact:
+    latest_version: "{{ latest_borg_version.stdout }}"
+
+- debug:
+    msg: "Latest available version: {{ latest_version }}"
+  when: latest_version is defined
