@@ -2,64 +2,13 @@
 - include: check-parameters.yml
   no_log: False
 
-- name: Create repo directory
-  file:
-    path: "{{repo_path}}"
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-  register: repo_creation
-
 - name: install package
   apt:
     name: borgbackup
     state: latest
     update_cache: yes
 
-- name: Init encrypted repo
-  shell: 'export BORG_PASSPHRASE="{{encryption_passphrase}}"; borg init --encryption {{encryption_mode}} "{{repo_path}}"'
-  when: repo_creation.changed
-    and encryption_passphrase is defined
-    and encryption_passphrase | length > 0
-
-- name: Init unencrypted repo
-  shell: 'borg init --encryption none "{{repo_path}}"'
-  when: repo_creation.changed
-    and (encryption_passphrase is not defined
-    or encryption_passphrase | length < 1)
-
-- name: Create private working directory
-  file:
-    path: "{{private_working_directory}}"
-    state: directory
-    owner: root
-    group: root
-    mode: 0700
-
-- name: Setup passphrase file
-  copy:
-    dest: "{{passphrase_file}}"
-    content: "{{encryption_passphrase}}"
-    owner: root
-    group: root
-    mode: 0600
-
-- name: Create borgbackup script directory
-  file:
-    path: "/opt/borgbackup"
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-  register: repo_creation
-
-- name: Create borgbackup script
-  template:
-    src: borgbackup.bash.j2
-    dest: "/opt/borgbackup/borgbackup.bash"
-    owner: root
-    group: root
-    mode: 0755
-
+- include: create-repo.yml
+- include: setup-private-passphrase-file.yml
+- include: setup-borgbackup-script.yml
 - include: setup-systemd-service.yml
