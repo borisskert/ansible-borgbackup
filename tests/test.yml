@@ -1,3 +1,6 @@
 ---
 - hosts: test_machine
   become: yes
+
+  roles:
+    - role: setup-borgbackup

@@ -1,0 +1,6 @@
+---
+- name: install package
+  apt:
+    name: borgbackup
+    state: latest
+    update_cache: yes
