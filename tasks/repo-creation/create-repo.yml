@@ -1,0 +1,37 @@
+---
+- name: Determine if a repo exists
+    (if this tasks hangs, you maybe have ssh connection issues like unknown hosts or missing authentication keys)
+  shell: |
+    {% if item.encryption_passphrase is defined and item.encryption_passphrase | length > 0 %}
+    export BORG_PASSPHRASE="{{item.encryption_passphrase}}"
+    {% endif %}
+    borg info "{{item.repo_path}}"
+  changed_when: False
+  failed_when: False
+  register: repo_info
+
+- set_fact:
+    repo_exists:  "{{repo_info.rc == 0}}"
+
+- name: Init repo
+  shell: |
+    {% if item.encryption_passphrase is defined and item.encryption_passphrase | length > 0 %}
+    export BORG_PASSPHRASE="{{item.encryption_passphrase}}"
+    borg init --encryption {{item.encryption_mode}} "{{item.repo_path}}"
+    {% else %}
+    borg init --encryption none "{{item.repo_path}}"
+    {% endif %}
+  when: repo_exists | bool == false
+  register: create_repo
+  failed_when: ignore_failing_repos | bool == false
+    and create_repo != 0
+  changed_when: create_repo.rc == 0
+
+- set_fact:
+    repo_creation_failed: "{{repo_exists | bool == false
+      and create_repo.changed == false}}"
+
+- name: Collect failed_repo
+  set_fact:
+    failed_repos: "{{failed_repos + [item]}}"
+  when: repo_creation_failed | bool

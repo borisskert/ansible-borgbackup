@@ -6,6 +6,7 @@
     - role: setup-borgbackup
       version: 1.1.11
       private_working_directory: /srv/borgbackup
+      ignore_failing_repos: yes
       repos:
         - repo_path: /mnt/borgbackups/etc-backups
           encryption_mode: repokey
@@ -52,6 +53,15 @@
           archives:
             - name: my-remote-archive
               compression_mode: lzma,9
+              paths:
+                - /etc
+                - /home
+                - /srv
+                - /root
+        - repo_path: ssh://my_other_ssh_user@other_remote_server.org//home/my_other_remote_path
+          archives:
+            - name: my-other-remote-archive
+              compression_mode: lzma,2
               paths:
                 - /etc
                 - /home

@@ -1,14 +1,21 @@
 ---
-- include: create-local-repo.yml
+- name: Instanciate local fact for failed_repos
+  set_fact:
+    failed_repos: []
+
+- name: Create local repo directory
+  file:
+    path: "{{item.repo_path}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  register: repo_creation
   with_items: >
     {{repos
     | rejectattr('repo_path', 'regex', '^ssh://')
     | list
     }}
 
-- include: create-remote-repo.yml
-  with_items: >
-    {{repos
-    | selectattr('repo_path', 'regex', '^ssh://')
-    | list
-    }}
+- include: create-repo.yml
+  with_items: "{{repos}}"

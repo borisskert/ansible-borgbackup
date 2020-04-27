@@ -1,8 +1,0 @@
----
-- include: create-remote-encrypted-repo.yml
-  when: item.encryption_passphrase is defined
-    and item.encryption_passphrase | length > 0
-
-- include: create-remote-unencrypted-repo.yml
-  when: item.encryption_passphrase is not defined
-    or item.encryption_passphrase | length < 1

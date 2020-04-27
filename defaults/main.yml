@@ -7,3 +7,5 @@ private_working_directory: ''
 repos: []
 
 system: linux64
+
+ignore_failing_repos: False

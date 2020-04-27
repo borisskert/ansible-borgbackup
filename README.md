@@ -21,12 +21,13 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 | version        |       | no          | [empty] => latest version | Specifies the version of borg to be installed |
 | private_working_directory | absolute path | no, only if you specify repos with encryption enabled | [empty] | Specifies the location where your passphrase files will be stored |
 | repos                     | array of `repo` | no                                                    | []    | Specifies the repos for your backup                               |
+| ignore_failing_repos      | boolean         | no                                                    | no    | By default your ansible playbook will fail if a repo fails to be initialized. Setting this property to `True` will ignore and omit all failing repos |
 
 ### Definition `repo`
 
 | Parameter name | Type  | Mandatory?  | Default value             | Description |
 |----------------|-------|-------------|---------------------------|-------------|
-| repo_path      | absolute path | yes | [empty]                   | Specifies the location of your repo. Also, ssh repos are supported |
+| repo_path      | absolute path | yes | [empty]                   | Specifies the location of your repo. Also, ssh repos are supported. Make sure you have permissions to connect via ssh. |
 | encryption_mode | enum         | yes | [empty]                   | Specifies the encryption mode borg will use for this repo. Allowed: `repokey`, `repokey-blake2` |
 | encryption_passphrase | text   | yes | [empty]                   | Your secret passphrase for your encrypted repo                                                  |
 | passphrase_filename   | file_name | yes | [empty]                | Filename of your passphrase file stored in `private_working_directory`                          |

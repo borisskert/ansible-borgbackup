@@ -2,6 +2,7 @@
 set -e
 {% for repo in repos %}
 # ------------------------------------------------------------------------------------------
+{% if failed_repos is defined and not (repo in failed_repos) %}
 
 {% if repo.encryption_passphrase is defined and repo.encryption_passphrase | length > 0 %}
 export BORG_PASSPHRASE=$(cat "{{private_working_directory}}/{{repo.passphrase_filename}}")
@@ -22,5 +23,9 @@ export BORG_PASSPHRASE=$(cat "{{private_working_directory}}/{{repo.passphrase_fi
 {% endif %}
 {% endfor %}
 
+{% else %}
+# Omitting {{repo.repo_path}} cause of creation/connection problems
+
+{% endif %}
 {% endfor %}
 # ------------------------------------------------------------------------------------------
