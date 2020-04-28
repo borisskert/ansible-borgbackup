@@ -30,7 +30,7 @@
   when: repo_exists | bool == false
   register: create_repo
   failed_when: ignore_failing_repos | bool == false
-    and create_repo != 0
+    and create_repo.rc != 0
   changed_when: create_repo.rc == 0
 
 - set_fact:

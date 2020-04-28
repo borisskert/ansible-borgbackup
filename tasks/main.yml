@@ -4,11 +4,24 @@
 
 - include: install/main.yml
 
+- name: Filter disabled repos
+  set_fact:
+    disabled_repos: >
+      {{repos
+      | selectattr('disable_repo', 'defined')
+      | selectattr('disable_repo', 'eq', True)
+      | list
+      }}
+
 - include: repo-creation/create-repos.yml
   when: repos is defined and repos | length > 0
 
 - include: setup-private-passphrase-file.yml
-  with_items: "{{repos}}"
+  with_items: >
+    {{repos
+    | reject('in', disabled_repos)
+    | list
+    }}
   when: repos is defined and repos | length > 0
 
 - include: setup-borgbackup-script.yml

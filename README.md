@@ -34,6 +34,7 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 | passphrase_filename   | file_name | yes | [empty]                | Filename of your passphrase file stored in `private_working_directory`                          |
 | archives              | array of `archive` | yes | []            | The defined archives which will be stored in this repo                                          |
 | prune                 | `prune` object     | no  | {}            | Containing your prune settings for this repo (recommended!)                                     |
+| disable_repo          | boolean            | no  | no            | You can disable a repo with this switch                                                         |
 
 ### Definition `archive`
 
@@ -127,6 +128,16 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
           passphrase_filename: remote_backup_passphrase.txt
           archives:
             - name: my-remote-archive
+              compression_mode: lzma,9
+              paths:
+                - /etc
+                - /home
+                - /srv
+                - /root
+        - repo_path: ssh://disabled_user@disabled_server//borgbackup-test
+          disable_repo: yes
+          archives:
+            - name: my-disabled-archive
               compression_mode: lzma,9
               paths:
                 - /etc

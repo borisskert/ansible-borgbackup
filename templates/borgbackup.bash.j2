@@ -1,8 +1,14 @@
 #!/bin/bash
-set -e
+
 {% for repo in repos %}
 # ------------------------------------------------------------------------------------------
-{% if failed_repos is defined and not (repo in failed_repos) %}
+{% if failed_repos is defined and repo in failed_repos %}
+# Omitting {{repo.repo_path}} cause of creation/connection problems
+
+{% elif repo in disabled_repos %}
+# Omitting {{repo.repo_path}} cause it's disabled
+
+{% else %}
 
 {% if repo.encryption_passphrase is defined and repo.encryption_passphrase | length > 0 %}
 export BORG_PASSPHRASE=$(cat "{{private_working_directory}}/{{repo.passphrase_filename}}")
@@ -22,9 +28,6 @@ export BORG_PASSPHRASE=$(cat "{{private_working_directory}}/{{repo.passphrase_fi
             {% if repo.prune.keep_within is defined %}--keep-within={{repo.prune.keep_within}} {% endif %}{% if repo.prune.keep_daily is defined %}--keep-daily={{repo.prune.keep_daily}} {% endif %}{% if repo.prune.keep_weekly is defined %}--keep-weekly={{repo.prune.keep_weekly}} {% endif %}{% if repo.prune.keep_monthly is defined %}--keep-monthly={{repo.prune.keep_monthly}}{% endif %}
 {% endif %}
 {% endfor %}
-
-{% else %}
-# Omitting {{repo.repo_path}} cause of creation/connection problems
 
 {% endif %}
 {% endfor %}

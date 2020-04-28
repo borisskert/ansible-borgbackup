@@ -68,3 +68,13 @@
                 - /home
                 - /srv
                 - /root
+        - repo_path: ssh://disabled_user@disabled_server//borgbackup-test
+          disable_repo: yes
+          archives:
+            - name: my-disabled-archive
+              compression_mode: lzma,9
+              paths:
+                - /etc
+                - /home
+                - /srv
+                - /root
