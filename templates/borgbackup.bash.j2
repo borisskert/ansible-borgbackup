@@ -15,6 +15,7 @@ export BORG_PASSPHRASE=$(cat "{{private_working_directory}}/{{repo.passphrase_fi
 {% endif %}
 {% for archive in repo.archives %}
 
+{{borg_executible}} break-lock {{repo.repo_path}} && \
 {{borg_executible}} create \
             --stats \
             --compression {{archive.compression_mode}} \
