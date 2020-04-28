@@ -9,3 +9,4 @@ repos: []
 system: linux64
 
 ignore_failing_repos: False
+no_strict_host_key_checking: False

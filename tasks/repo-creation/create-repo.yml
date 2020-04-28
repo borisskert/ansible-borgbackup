@@ -2,6 +2,9 @@
 - name: Determine if a repo exists
     (if this tasks hangs, you maybe have ssh connection issues like unknown hosts or missing authentication keys)
   shell: |
+    {% if no_strict_host_key_checking | bool %}
+    export BORG_RSH="ssh -oStrictHostKeyChecking=no"
+    {% endif %}
     {% if item.encryption_passphrase is defined and item.encryption_passphrase | length > 0 %}
     export BORG_PASSPHRASE="{{item.encryption_passphrase}}"
     {% endif %}
@@ -15,6 +18,9 @@
 
 - name: Init repo
   shell: |
+    {% if no_strict_host_key_checking | bool %}
+    export BORG_RSH="ssh -oStrictHostKeyChecking=no"
+    {% endif %}
     {% if item.encryption_passphrase is defined and item.encryption_passphrase | length > 0 %}
     export BORG_PASSPHRASE="{{item.encryption_passphrase}}"
     borg init --encryption {{item.encryption_mode}} "{{item.repo_path}}"

@@ -22,6 +22,7 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 | private_working_directory | absolute path | no, only if you specify repos with encryption enabled | [empty] | Specifies the location where your passphrase files will be stored |
 | repos                     | array of `repo` | no                                                    | []    | Specifies the repos for your backup                               |
 | ignore_failing_repos      | boolean         | no                                                    | no    | By default your ansible playbook will fail if a repo fails to be initialized. Setting this property to `True` will ignore and omit all failing repos |
+| no_strict_host_key_checking | boolean       | no                                                    | no    | You can disable ssh strict host key checking with setting this switch to `yes`                                                                       |
 
 ### Definition `repo`
 
