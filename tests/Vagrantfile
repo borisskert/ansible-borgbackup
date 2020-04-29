@@ -1,3 +1,7 @@
+backup_drive = './.vagrant/tmp/backup_drive.vdi'
+another_backup_drive = './.vagrant/tmp/another_backup_drive.vdi'
+
+
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/bionic64"
   # config.vm.box = "ubuntu/focal64"
@@ -10,5 +14,71 @@ Vagrant.configure("2") do |config|
     v.name = "ansible_rsnapshot"
     v.memory = 1024
     v.cpus = 2
+
+    unless File.exist?(backup_drive)
+      v.customize ['createhd', '--filename', backup_drive, '--variant', 'Standard', '--size', 10 * 1024]
+    end
+
+    unless File.exist?(another_backup_drive)
+      v.customize ['createhd', '--filename', another_backup_drive, '--variant', 'Standard', '--size', 10 * 1024]
+    end
+
+    v.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', backup_drive]
+    v.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 3, '--device', 0, '--type', 'hdd', '--medium', another_backup_drive]
   end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    create_partition_table() {
+      drive=$1
+      # https://www.unix.com/shell-programming-and-scripting/207169-non-interactive-fdisk-partition-script.html
+      echo "n
+      p
+      1
+      
+      
+      t
+      8e
+      w" | fdisk $drive
+    }
+
+    create_partition() {
+      drive=$1
+      group=$2
+      volume=$3
+      
+      pvcreate $drive
+      vgcreate "$group" "${drive}1"
+      lvcreate -L 1G -n "$volume" "$group"
+    }
+
+    install_disk() {
+      drive=$1
+      group=$2
+      volume=$3
+      
+      #device="/dev/${group}/${sdc_vol}"
+      device="/dev/mapper/${group}-${volume}"
+      mount_point="/mnt/${volume}"
+
+      create_partition_table $drive
+      create_partition $drive $group $volume
+
+      # device available at:
+      ls -la $device
+
+      mkfs.ext4 $device
+    }
+
+    if ! ls /dev/mapper/sdc_group-sdc_vol >> /dev/null; then
+      echo "**** Installing drive /dev/sdc ****"
+      install_disk /dev/sdc sdc_group sdc_vol
+      echo "***********************************"
+    fi
+    
+    if ! ls /dev/mapper/sdd_group-sdd_vol >> /dev/null; then
+      echo "**** Installing drive /dev/sdd ****"
+      install_disk /dev/sdd sdd_group sdd_vol
+      echo "***********************************"
+    fi
+  SHELL
 end

@@ -18,4 +18,4 @@ ansible-playbook -i inventory.ini test.yml \
   && (echo 'Idempotence test: pass' && exit 0) \
   || (echo 'Idempotence test: fail' && exit 1)
 
-vagrant destroy -f
+#vagrant destroy -f

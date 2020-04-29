@@ -2,12 +2,32 @@
 - hosts: test_machine
   become: yes
 
+  pre_tasks:
+    - name: Mount /dev/sdc
+      mount:
+        path: /mnt/sdc_vol
+        src: /dev/mapper/sdc_group-sdc_vol
+        fstype: ext4
+        state: mounted
+      changed_when: False
+
+    - name: Mount /dev/sdd
+      mount:
+        path: /mnt/sdd_vol
+        src: /dev/mapper/sdd_group-sdd_vol
+        fstype: ext4
+        state: mounted
+      changed_when: False
+
   roles:
     - role: setup-borgbackup
       version: 1.1.11
       private_working_directory: /srv/borgbackup
       ignore_failing_repos: yes
       no_strict_host_key_checking: yes
+      backup_devices:
+        - /dev/mapper/sdc_group-sdc_vol
+        - /dev/mapper/sdd_group-sdd_vol
       repos:
         - repo_path: /mnt/borgbackups/etc-backups
           encryption_mode: repokey
@@ -78,10 +98,21 @@
                 - /home
                 - /srv
                 - /root
-
-  post_tasks:
-    - name: Start service
-      service:
-        name: borgbackup
-        state: started
-      changed_when: False
+        - repo_path: /mnt/sdc_vol/repo
+          archives:
+            - name: my-sdc-archive
+              compression_mode: lzma,9
+              paths:
+                - /etc
+                - /home
+                - /srv
+                - /root
+        - repo_path: /mnt/sdd_vol/repo
+          archives:
+            - name: my-sdd-archive
+              compression_mode: lzma,9
+              paths:
+                - /etc
+                - /home
+                - /srv
+                - /root

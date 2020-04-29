@@ -2,7 +2,15 @@
 Description=borgbackup service
 
 [Service]
+{% for backup_device in backup_devices %}
+ExecStartPre=/bin/bash -c "if ! mount | grep {{backup_device}} >> /dev/null; then mount {{backup_device}}; fi"
+{% endfor %}
+
 ExecStart=/opt/borgbackup/borgbackup.bash
+
+{% for backup_device in backup_devices %}
+ExecStopPost=/bin/bash -c "if mount | grep {{backup_device}} >> /dev/null; then umount {{backup_device}}; fi"
+{% endfor %}
 
 Restart=no
 TimeoutSec=3600
