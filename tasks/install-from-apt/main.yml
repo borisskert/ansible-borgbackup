@@ -1,0 +1,12 @@
+---
+- name: install apt package
+  apt:
+    name: "borgbackup={{version}}"
+  when: version is defined
+    and version | length > 0
+
+- name: install latest apt package
+  apt:
+    name: borgbackup
+  when: version is not defined
+    or version | length < 1

@@ -22,6 +22,7 @@
   roles:
     - role: setup-borgbackup
       version: 1.1.11
+      install_from_apt: no
       private_working_directory: /srv/borgbackup
       ignore_failing_repos: yes
       no_strict_host_key_checking: yes

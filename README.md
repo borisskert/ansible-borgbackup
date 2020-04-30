@@ -24,6 +24,7 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 | ignore_failing_repos      | boolean         | no                                                    | no    | By default your ansible playbook will fail if a repo fails to be initialized. Setting this property to `True` will ignore and omit all failing repos |
 | no_strict_host_key_checking | boolean       | no                                                    | no    | You can disable ssh strict host key checking with setting this switch to `yes`                                                                       |
 | backup_devices              | array of texts | no                                                   | []    | You can specify any backup drives which will be mounted before beackup and unmounted after (i. e. you can use USB drives)                            |
+| install_from_apt            | boolean        | no                                                   | no    | You can install the package `borgbackup` from apt if you wish                                                                                        |
 
 ### Definition `repo`
 
@@ -83,6 +84,7 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
   roles:
     - role: setup-borgbackup
       version: 1.1.11
+      install_from_apt: no
       private_working_directory: /srv/borgbackup
       backup_devices:
         - /dev/my_drive

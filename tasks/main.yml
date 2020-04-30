@@ -3,6 +3,10 @@
   no_log: False
 
 - include: install/main.yml
+  when: install_from_apt | bool == False
+
+- include: install-from-apt/main.yml
+  when: install_from_apt | bool == True
 
 - name: Filter disabled repos
   set_fact:
