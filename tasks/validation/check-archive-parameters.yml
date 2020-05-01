@@ -18,10 +18,3 @@
       - "archive.paths is defined"
       - "archive.paths | length > 0"
     fail_msg: "parameter 'archive.paths' is missing or empty"
-
-- name: check 'compression_mode' parameter
-  assert:
-    that:
-      - "archive.compression_mode is defined"
-      - "archive.compression_mode | length > 0"
-    fail_msg: "parameter 'archive.compression_mode' is missing"

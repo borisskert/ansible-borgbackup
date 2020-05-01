@@ -65,7 +65,6 @@
             keep_monthly: 12
           archives:
             - name: opt-archive
-              compression_mode: none
               paths:
                 - /opt
         - repo_path: ssh://my_ssh_user@remote_server.org//home/my_remote_path

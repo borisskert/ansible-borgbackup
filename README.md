@@ -43,7 +43,7 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 | Parameter name | Type  | Mandatory?  | Default value             | Description |
 |----------------|-------|-------------|---------------------------|-------------|
 | name           | text  | yes         | [empty]                   | Specified the name of your archive |
-| compression_mode | enum | yes        | [empty]                   | Specified the compression mode and level. Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
+| compression_mode | enum | no         | [empty]                   | Specified the compression mode and level. Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
 | paths            | array of absolute paths | yes | [empty]       | Specifies the paths which will be selected for backup into your archive. Specify at least one  |
 
 ### Definition `prune`
