@@ -1,6 +1,6 @@
 ---
 - hosts: test_machine
-  become: yes
+  become: true
 
   pre_tasks:
     - name: Mount /dev/sdc
@@ -9,7 +9,7 @@
         src: /dev/mapper/sdc_group-sdc_vol
         fstype: ext4
         state: mounted
-      changed_when: False
+      changed_when: false
 
     - name: Mount /dev/sdd
       mount:
@@ -17,15 +17,15 @@
         src: /dev/mapper/sdd_group-sdd_vol
         fstype: ext4
         state: mounted
-      changed_when: False
+      changed_when: false
 
   roles:
     - role: setup-borgbackup
       version: 1.1.11
-      install_from_apt: no
+      install_from_apt: false
       private_working_directory: /srv/borgbackup
-      ignore_failing_repos: yes
-      no_strict_host_key_checking: yes
+      ignore_failing_repos: true
+      no_strict_host_key_checking: true
       backup_devices:
         - /dev/mapper/sdc_group-sdc_vol
         - /dev/mapper/sdd_group-sdd_vol
@@ -79,7 +79,8 @@
                 - /home
                 - /srv
                 - /root
-        - repo_path: ssh://my_other_ssh_user@other_remote_server.org//home/my_other_remote_path
+        - repo_path:
+            ssh://my_other_ssh_user@other_remote_server.org//home/my_other_remote_path
           archives:
             - name: my-other-remote-archive
               compression_mode: lzma,2
@@ -89,7 +90,7 @@
                 - /srv
                 - /root
         - repo_path: ssh://disabled_user@disabled_server//borgbackup-test
-          disable_repo: yes
+          disable_repo: true
           archives:
             - name: my-disabled-archive
               compression_mode: lzma,9

@@ -1,8 +1,16 @@
 ---
 - name: Estimate latest version
-  shell: git ls-remote https://github.com/borgbackup/borg | grep refs/tags | grep -oP "[0-9]+\.[0-9]+\.[0-9]+$" | sort --version-sort | tail -n 1
+  shell: |
+    set -o pipefail
+    git ls-remote https://github.com/borgbackup/borg \
+    | grep refs/tags \
+    | grep -oP "[0-9]+\.[0-9]+\.[0-9]+$" \
+    | sort --version-sort \
+    | tail -n 1
+  args:
+    executable: /bin/bash
   register: latest_borg_version
-  changed_when: False
+  changed_when: false
 
 - name: Use estimated version
   set_fact:

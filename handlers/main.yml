@@ -1,0 +1,9 @@
+---
+- name: Reload systemd
+  systemd:
+    daemon_reload: true
+
+- name: Start borgbackup timer
+  systemd:
+    name: "borgbackup.timer"
+    enabled: true

@@ -17,8 +17,10 @@
     that:
       - "repo.encryption_mode is defined"
       - "repo.encryption_mode | length > 0"
-      - "repo.encryption_mode == 'repokey' or repo.encryption_mode == 'repokey-blake2'"
-    fail_msg: "parameter 'repo.encryption_mode' must be one of these values: ['repokey', 'repokey-blake2']"
+      - "repo.encryption_mode == 'repokey'
+       or repo.encryption_mode == 'repokey-blake2'"
+    fail_msg: "parameter 'repo.encryption_mode' must be
+     one of these values: ['repokey', 'repokey-blake2']"
   when: repo.encryption_passphrase is defined
     and repo.encryption_passphrase | length > 0
 
@@ -48,7 +50,7 @@
     fail_msg: "parameter 'repo.archives' is missing or empty"
 
 - include: check-archive-parameters.yml
-  loop: "{{repo.archives}}"
+  loop: "{{ repo.archives }}"
   loop_control:
     loop_var: archive
 

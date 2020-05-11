@@ -3,14 +3,15 @@ galaxy_info:
   author: borisskert
   description: Setup role for borgbackup
   min_ansible_version: 2.9
+  license: MIT
   platforms:
-  - name: Ubuntu
-    versions:
-    - xenial
-    - bionic
-    - focal
-  categories:
-  - development
-  - packaging
-  - system
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+        - focal
+  galaxy_tags:
+    - development
+    - packaging
+    - system
 dependencies: []

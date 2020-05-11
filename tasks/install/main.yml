@@ -5,9 +5,11 @@
 
 - name: Download bin file
   get_url:
-    url: "https://github.com/borgbackup/borg/releases/download/{{version_to_be_installed}}/borg-{{system}}"
-    dest: "{{borg_executible}}"
+    url:
+      "https://github.com/borgbackup/borg/releases/\
+      download/{{ version_to_be_installed }}/borg-{{ system }}"
+    dest: "{{ borg_executible }}"
     mode: 0755
-    force: yes
+    force: true
   when: installed_version is not defined
     or version_to_be_installed != installed_version

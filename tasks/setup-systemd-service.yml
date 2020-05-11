@@ -6,7 +6,7 @@
     owner: root
     group: root
     mode: 0644
-  register: systemd_service
+  notify: Reload systemd
 
 - name: Create borgbackup timer
   template:
@@ -15,19 +15,15 @@
     owner: root
     group: root
     mode: 0644
-  register: systemd_timer
+  notify: Reload systemd
 
-- name: Reload systemd
-  command: systemctl daemon-reload
-  when: systemd_service.changed or systemd_timer.changed
-
-- name: Setup borgbackup service
+- name: Enable borgbackup service
   service:
     name: "borgbackup.service"
-    enabled: yes
+    enabled: true
 
-- name: Setup borgbackup timer
+- name: Enable borgbackup timer
   systemd:
     name: "borgbackup.timer"
-    state: started
-    enabled: yes
+    enabled: true
+  notify: Start borgbackup timer

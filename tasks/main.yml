@@ -1,12 +1,12 @@
 ---
 - include: validation/check-parameters.yml
-  no_log: False
+  no_log: false
 
 - include: install/main.yml
-  when: install_from_apt | bool == False
+  when: not (install_from_apt | bool)
 
 - include: install-from-apt/main.yml
-  when: install_from_apt | bool == True
+  when: install_from_apt | bool
 
 - name: Filter disabled repos
   set_fact:
@@ -33,3 +33,6 @@
 
 - include: setup-systemd-service.yml
   when: repos is defined and repos | length > 0
+
+- name: Start systemd-managed docker containers
+  meta: flush_handlers

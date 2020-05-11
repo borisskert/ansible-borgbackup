@@ -10,4 +10,4 @@
   when: latest_version is defined
 
 - debug:
-    msg: "Version planned to be installed: {{version_to_be_installed}}"
+    msg: "Version planned to be installed: {{ version_to_be_installed }}"

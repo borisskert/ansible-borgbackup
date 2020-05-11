@@ -1,20 +1,25 @@
 ---
 - name: Estimate if installed
   stat:
-    path: "{{borg_executible}}"
+    path: "{{ borg_executible }}"
   register: executible_stats
 
 - name: Estimate installed version
-  shell: "{{borg_executible}} --version"
+  command: "{{ borg_executible }} --version"
   when: executible_stats.stat.exists
   register: borg_installed_version
   changed_when: false
 
 - name: Try to parse installed version
   set_fact:
-    installed_version: "{{ borg_installed_version.stdout | regex_search(regexp,'\\1') | first }}"
+    installed_version:
+      "{{
+      borg_installed_version.stdout
+      | regex_search(regexp,'\\1')
+      | first
+      }}"
   vars:
-    regexp: '^borg ([0-9]+\.[0-9]+\.[0-9]+)$'
+    regexp: ^borg ([0-9]+\.[0-9]+\.[0-9]+)$
   when: borg_installed_version.stdout is defined
 
 - debug:

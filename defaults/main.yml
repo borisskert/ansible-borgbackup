@@ -7,9 +7,9 @@ private_working_directory: ''
 repos: []
 
 system: linux64
-install_from_apt: no
+install_from_apt: false
 
-ignore_failing_repos: False
-no_strict_host_key_checking: False
+ignore_failing_repos: false
+no_strict_host_key_checking: false
 
 backup_devices: []
