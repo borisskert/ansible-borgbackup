@@ -1,0 +1,35 @@
+---
+dependency:
+  name: galaxy
+
+lint: |
+  set -e
+  yamllint . --strict
+  ansible-lint
+
+driver:
+  name: docker
+
+platforms:
+  - name: ansible-nextcloud-focal
+    image: docker.io/borisskert/python3:focal
+    pull: true
+    pre_build_image: true
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    groups:
+      - docker
+
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ../shared/converge.yml
+  inventory:
+    group_vars:
+      docker:
+        molecule_docker_environment: true
+      debian:
+        ansible_python_interpreter: /usr/bin/python3
+
+verifier:
+  name: ansible

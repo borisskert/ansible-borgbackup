@@ -1,0 +1,36 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+
+platforms:
+  - name: ansible-borgbackup-xenial
+    box: ubuntu/xenial64
+  - name: ansible-borgbackup-bionic
+    box: ubuntu/bionic64
+  - name: ansible-borgbackup-focal
+    box: ubuntu/focal64
+  - name: ansible-borgbackup-stretch
+    box: debian/stretch64
+    groups:
+      - debian
+  - name: ansible-borgbackup-buster
+    box: debian/buster64
+    groups:
+      - debian
+
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ../shared/converge.yml
+  inventory:
+    group_vars:
+      debian:
+        ansible_python_interpreter: /usr/bin/python3
+
+verifier:
+  name: ansible

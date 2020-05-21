@@ -6,7 +6,7 @@
     and version | length > 0
 
 - name: install latest apt package
-  apt:
+  package:
     name: borgbackup
   when: version is not defined
     or version | length < 1

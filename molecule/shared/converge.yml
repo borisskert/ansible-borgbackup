@@ -1,0 +1,32 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  roles:
+    - role: ansible-borgbackup
+      version: 1.1.11
+      install_from_apt: false
+      private_working_directory: /srv/borgbackup
+      ignore_failing_repos: true
+      no_strict_host_key_checking: true
+      backup_devices:
+        - /dev/mapper/sdc_group-sdc_vol
+      repos:
+        - repo_path: /mnt/borgbackups/local_repo
+          encryption_mode: repokey
+          encryption_passphrase: "thi5 is-mY_p@5sphr4s3 for /etc"
+          passphrase_filename: repo_passphrase.txt
+          prune:
+            keep_within: 1d
+            keep_daily: 7
+            keep_weekly: 4
+            keep_monthly: 12
+          archives:
+            - name: etc-archive
+              compression_mode: lzma,4
+              paths:
+                - /etc
+                - /home
+                - /srv
+                - /root

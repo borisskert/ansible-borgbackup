@@ -1,5 +1,5 @@
 ---
-name: Linting files
+name: Run tests
 
 'on':
   push:
@@ -8,28 +8,17 @@ name: Linting files
   pull_request:
     branches:
       - master
-  schedule:
-    - cron: '0 6 * * *'
 
 jobs:
-  yamllint:
+  molecule_test:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@master
-
-      - name: Run yamllint
-        uses: karancode/yamllint-github-action@master
+        uses: actions/checkout@v2
         with:
-          yamllint_strict: true
+          path: "${{ github.repository }}"
 
-  ansible_lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Lint Ansible Playbook
-        uses: ansible/ansible-lint-action@master
+      - name: lint and test with molecule
+        uses: borisskert/molecule-action@v0.0
         with:
-          targets: |
-            tests/test.yml
+          arguments: test

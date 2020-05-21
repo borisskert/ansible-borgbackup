@@ -19,11 +19,19 @@
 
 - name: Enable borgbackup service
   service:
-    name: "borgbackup.service"
+    name: borgbackup.service
     enabled: true
+  when: not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
 
 - name: Enable borgbackup timer
   systemd:
-    name: "borgbackup.timer"
+    name: borgbackup.timer
     enabled: true
   notify: Start borgbackup timer
+  when: not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )

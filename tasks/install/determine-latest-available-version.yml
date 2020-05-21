@@ -1,4 +1,9 @@
 ---
+- name: Install git
+  package:
+    name: git
+    state: present
+
 - name: Estimate latest version
   shell: |
     set -o pipefail

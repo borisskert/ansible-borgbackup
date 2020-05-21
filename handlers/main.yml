@@ -2,6 +2,10 @@
 - name: Reload systemd
   systemd:
     daemon_reload: true
+  when: not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
 
 - name: Start borgbackup timer
   systemd:

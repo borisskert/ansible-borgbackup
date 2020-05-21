@@ -1,0 +1,44 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Should provide borg executable
+      command: borg --version
+      register: borg_version
+      changed_when: false
+      failed_when:
+        borg_version.stdout != 'borg 1.1.11'
+
+    - name: Should create local repo directory
+      stat:
+        path: /mnt/borgbackups/local_repo
+      register: local_repo_directory
+      failed_when: not local_repo_directory.stat.exists
+
+    - name: Should create local repo password file
+      stat:
+        path: /srv/borgbackup/repo_passphrase.txt
+      register: local_repo_password_file
+      failed_when: not local_repo_password_file.stat.exists
+
+    - name: Should create borgbackup script
+      stat:
+        path: /opt/borgbackup/borgbackup.bash
+      register: borgbackup_script
+      failed_when: not borgbackup_script.stat.exists
+
+    - name: Should enable borgbackup service
+      service:
+        name: borgbackup.service
+        enabled: true
+      register: borgbackup_service
+      failed_when: borgbackup_service.changed
+
+    - name: Should enable borgbackup timer
+      systemd:
+        name: borgbackup.timer
+        enabled: true
+      register: borgbackup_timer
+      failed_when: borgbackup_timer.changed
