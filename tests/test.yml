@@ -21,15 +21,15 @@
 
   roles:
     - role: setup-borgbackup
-      version: 1.1.11
-      install_from_apt: false
-      private_working_directory: /srv/borgbackup
-      ignore_failing_repos: true
-      no_strict_host_key_checking: true
-      backup_devices:
+      borgbackup_version: 1.1.11
+      borgbackup_install_from_apt: false
+      borgbackup_working_directory: /srv/borgbackup
+      borgbackup_ignore_failing_repos: true
+      borgbackup_no_strict_host_key_checking: true
+      borgbackup_backup_devices:
         - /dev/mapper/sdc_group-sdc_vol
         - /dev/mapper/sdd_group-sdd_vol
-      repos:
+      borgbackup_repos:
         - repo_path: /mnt/borgbackups/etc-backups
           encryption_mode: repokey
           encryption_passphrase: "thi5 is-mY_p@5sphr4s3 for /etc"

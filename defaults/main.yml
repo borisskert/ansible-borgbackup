@@ -1,15 +1,14 @@
 ---
-version: ''
+borgbackup_version: ''
 borg_executible: /usr/local/bin/borg
 
-private_working_directory: ''
+borgbackup_working_directory: ''
 
-repos: []
+borgbackup_repos: []
 
-system: linux64
-install_from_apt: false
+borgbackup_install_from_apt: false
 
-ignore_failing_repos: false
-no_strict_host_key_checking: false
+borgbackup_ignore_failing_repos: false
+borgbackup_no_strict_host_key_checking: false
 
-backup_devices: []
+borgbackup_backup_devices: []

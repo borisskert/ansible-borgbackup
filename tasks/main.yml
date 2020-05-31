@@ -3,36 +3,36 @@
   no_log: false
 
 - include: install/main.yml
-  when: not (install_from_apt | bool)
+  when: not (borgbackup_install_from_apt | bool)
 
 - include: install-from-apt/main.yml
-  when: install_from_apt | bool
+  when: borgbackup_install_from_apt | bool
 
 - name: Filter disabled repos
   set_fact:
     disabled_repos: >
-      {{repos
+      {{borgbackup_repos
       | selectattr('disable_repo', 'defined')
       | selectattr('disable_repo', 'eq', True)
       | list
       }}
 
 - include: repo-creation/create-repos.yml
-  when: repos is defined and repos | length > 0
+  when: borgbackup_repos is defined and borgbackup_repos | length > 0
 
 - include: setup-private-passphrase-file.yml
   with_items: >
-    {{repos
+    {{borgbackup_repos
     | reject('in', disabled_repos)
     | list
     }}
-  when: repos is defined and repos | length > 0
+  when: borgbackup_repos is defined and borgbackup_repos | length > 0
 
 - include: setup-borgbackup-script.yml
-  when: repos is defined and repos | length > 0
+  when: borgbackup_repos is defined and borgbackup_repos | length > 0
 
 - include: setup-systemd-service.yml
-  when: repos is defined and repos | length > 0
+  when: borgbackup_repos is defined and borgbackup_repos | length > 0
 
 - name: Start systemd-managed docker containers
   meta: flush_handlers

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-{% for repo in repos %}
+{% for repo in borgbackup_repos %}
 # ------------------------------------------------------------------------------------------
 {% if failed_repos is defined and repo in failed_repos %}
 # Omitting {{repo.repo_path}} cause of creation/connection problems
@@ -11,7 +11,7 @@
 {% else %}
 
 {% if repo.encryption_passphrase is defined and repo.encryption_passphrase | length > 0 %}
-export BORG_PASSPHRASE=$(cat "{{private_working_directory}}/{{repo.passphrase_filename}}")
+export BORG_PASSPHRASE=$(cat "{{borgbackup_working_directory}}/{{repo.passphrase_filename}}")
 {% endif %}
 {% for archive in repo.archives %}
 

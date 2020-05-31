@@ -18,13 +18,13 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 
 | Parameter name | Type  | Mandatory?  | Default value             | Description |
 |----------------|-------|-------------|---------------------------|-------------|
-| version        |       | no          | [empty] => latest version | Specifies the version of borg to be installed |
-| private_working_directory | absolute path | no, only if you specify repos with encryption enabled | [empty] | Specifies the location where your passphrase files will be stored |
-| repos                     | array of `repo` | no                                                    | []    | Specifies the repos for your backup                               |
-| ignore_failing_repos      | boolean         | no                                                    | no    | By default your ansible playbook will fail if a repo fails to be initialized. Setting this property to `True` will ignore and omit all failing repos |
-| no_strict_host_key_checking | boolean       | no                                                    | no    | You can disable ssh strict host key checking with setting this switch to `yes`                                                                       |
-| backup_devices              | array of texts | no                                                   | []    | You can specify any backup drives which will be mounted before beackup and unmounted after (i. e. you can use USB drives)                            |
-| install_from_apt            | boolean        | no                                                   | no    | You can install the package `borgbackup` from apt if you wish                                                                                        |
+| borgbackup_version        |       | no          | [empty] => latest version | Specifies the version of borg to be installed |
+| borgbackup_working_directory | absolute path | no, only if you specify repos with encryption enabled | [empty] | Specifies the location where your passphrase files will be stored |
+| borgbackup_repos                     | array of `repo` | no                                                    | []    | Specifies the repos for your backup                               |
+| borgbackup_ignore_failing_repos      | boolean         | no                                                    | no    | By default your ansible playbook will fail if a repo fails to be initialized. Setting this property to `True` will ignore and omit all failing repos |
+| borgbackup_no_strict_host_key_checking | boolean       | no                                                    | no    | You can disable ssh strict host key checking with setting this switch to `yes`                                                                       |
+| borgbackup_backup_devices              | array of texts | no                                                   | []    | You can specify any backup drives which will be mounted before beackup and unmounted after (i. e. you can use USB drives)                            |
+| borgbackup_install_from_apt            | boolean        | no                                                   | no    | You can install the package `borgbackup` from apt if you wish                                                                                        |
 
 ### Definition `repo`
 
@@ -33,7 +33,7 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 | repo_path      | absolute path | yes | [empty]                   | Specifies the location of your repo. Also, ssh repos are supported. Make sure you have permissions to connect via ssh. |
 | encryption_mode | enum         | yes | [empty]                   | Specifies the encryption mode borg will use for this repo. Allowed: `repokey`, `repokey-blake2` |
 | encryption_passphrase | text   | yes | [empty]                   | Your secret passphrase for your encrypted repo                                                  |
-| passphrase_filename   | file_name | yes | [empty]                | Filename of your passphrase file stored in `private_working_directory`                          |
+| passphrase_filename   | file_name | yes | [empty]                | Filename of your passphrase file stored in `borgbackup_working_directory`                          |
 | archives              | array of `archive` | yes | []            | The defined archives which will be stored in this repo                                          |
 | prune                 | `prune` object     | no  | {}            | Containing your prune settings for this repo (recommended!)                                     |
 | disable_repo          | boolean            | no  | no            | You can disable a repo with this switch                                                         |
@@ -83,13 +83,13 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 
   roles:
     - role: setup-borgbackup
-      version: 1.1.11
-      install_from_apt: no
-      private_working_directory: /srv/borgbackup
-      backup_devices:
+      borgbackup_version: 1.1.11
+      borgbackup_install_from_apt: no
+      borgbackup_working_directory: /srv/borgbackup
+      borgbackup_backup_devices:
         - /dev/my_drive
         - /dev/my_other_drive
-      repos:
+      borgbackup_repos:
         - repo_path: /mnt/borgbackups/etc-backups
           encryption_mode: repokey
           encryption_passphrase: "thi5 is-mY_p@5sphr4s3 for /etc"

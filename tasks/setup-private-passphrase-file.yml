@@ -1,7 +1,7 @@
 ---
 - name: Create private working directory
   file:
-    path: "{{ private_working_directory }}"
+    path: "{{ borgbackup_working_directory }}"
     state: directory
     owner: root
     group: root
@@ -11,7 +11,7 @@
 
 - name: Setup passphrase file
   copy:
-    dest: "{{ private_working_directory }}/{{ item.passphrase_filename }}"
+    dest: "{{ borgbackup_working_directory }}/{{ item.passphrase_filename }}"
     content: "{{ item.encryption_passphrase }}"
     owner: root
     group: root

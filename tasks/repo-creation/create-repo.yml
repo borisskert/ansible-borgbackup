@@ -4,7 +4,7 @@
     like unknown hosts or missing authentication keys)
   shell: |
     set -o pipefail
-    {% if no_strict_host_key_checking | bool %}
+    {% if borgbackup_no_strict_host_key_checking | bool %}
     export BORG_RSH="ssh -oStrictHostKeyChecking=no"
     {% endif %}
     {% if item.encryption_passphrase is defined
@@ -25,7 +25,7 @@
 - name: Init repo
   shell: |
     set -o pipefail
-    {% if no_strict_host_key_checking | bool %}
+    {% if borgbackup_no_strict_host_key_checking | bool %}
     export BORG_RSH="ssh -oStrictHostKeyChecking=no"
     {% endif %}
     {% if item.encryption_passphrase is defined
@@ -39,7 +39,7 @@
     executable: /bin/bash
   when: not (repo_exists | bool)
   register: create_repo
-  failed_when: not (ignore_failing_repos | bool)
+  failed_when: not (borgbackup_ignore_failing_repos | bool)
     and create_repo.rc != 0
   changed_when: create_repo.rc == 0
 

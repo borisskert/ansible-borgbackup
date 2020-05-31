@@ -1,7 +1,7 @@
 ---
 - name: Estimate version to be installed (use set version)
   set_fact:
-    version_to_be_installed: "{{ version }}"
+    version_to_be_installed: "{{ borgbackup_version }}"
   when: latest_version is not defined
 
 - name: Estimate version to be installed (use latest version)

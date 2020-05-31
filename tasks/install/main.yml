@@ -3,6 +3,10 @@
 - include: determine-latest-available-version.yml
 - include: select-version-to-install.yml
 
+- name: Set system fact
+  set_fact:
+    system: linux64
+
 - name: Download bin file
   get_url:
     url:

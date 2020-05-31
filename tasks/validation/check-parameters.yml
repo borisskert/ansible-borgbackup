@@ -1,5 +1,5 @@
 ---
 - include: check-repo-parameters.yml
-  loop: "{{ repos }}"
+  loop: "{{ borgbackup_repos }}"
   loop_control:
     loop_var: repo

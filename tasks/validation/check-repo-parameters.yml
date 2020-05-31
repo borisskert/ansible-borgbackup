@@ -33,12 +33,12 @@
   when: repo.encryption_passphrase is defined
     and repo.encryption_passphrase | length > 0
 
-- name: check 'private_working_directory' parameter
+- name: check 'borgbackup_working_directory' parameter
   assert:
     that:
-      - "private_working_directory is defined"
-      - "private_working_directory | length > 0"
-    fail_msg: "parameter 'private_working_directory' is missing"
+      - "borgbackup_working_directory is defined"
+      - "borgbackup_working_directory | length > 0"
+    fail_msg: "parameter 'borgbackup_working_directory' is missing"
   when: repo.encryption_passphrase is defined
     and repo.encryption_passphrase | length > 0
 
