@@ -1,0 +1,31 @@
+---
+- name: install apt dependencies
+  apt:
+    name:
+      - python3-pip
+      - libssl-dev  # needed for borgbackup
+      - libacl1-dev  # needed for borgbackup
+    update_cache: true
+
+- name: install pip dependencies
+  pip:
+    name: cython
+    state: present
+    executable: pip3
+
+- name: install pip package by specified version
+  pip:
+    name: borgbackup
+    version: "{{ borgbackup_version }}"
+    state: present
+    executable: pip3
+  when: borgbackup_version is defined
+    and borgbackup_version | length > 0
+
+- name: install latest pip package
+  pip:
+    name: borgbackup
+    state: latest  # noqa 403
+    executable: pip3
+  when: borgbackup_version is not defined
+    or borgbackup_version | length < 1

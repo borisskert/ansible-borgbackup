@@ -1,0 +1,22 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Should install package from pip
+      pip:
+        name: borgbackup
+        state: present
+        executable: pip3
+      register: borgbackup_pip_package
+      failed_when:
+        borgbackup_pip_package.failed | bool
+        or borgbackup_pip_package.changed | bool
+
+    - name: Should provide borg executable
+      command: borg --version
+      register: borg_version
+      changed_when: false
+      failed_when:
+        borg_version.stdout != 'borg 1.1.11'

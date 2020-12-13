@@ -3,10 +3,16 @@
   no_log: false
 
 - include: install/main.yml
-  when: not (borgbackup_install_from_apt | bool)
+  when: not (
+    borgbackup_install_from_apt | bool
+    or borgbackup_install_from_pip | bool
+    )
 
 - include: install-from-apt/main.yml
   when: borgbackup_install_from_apt | bool
+
+- include: install-from-pip/main.yml
+  when: borgbackup_install_from_pip | bool
 
 - name: Filter disabled repos
   set_fact:

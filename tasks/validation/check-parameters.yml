@@ -3,3 +3,11 @@
   loop: "{{ borgbackup_repos }}"
   loop_control:
     loop_var: repo
+
+- name: check 'install_from' parameters
+  assert:
+    that:
+      - "not (borgbackup_install_from_apt | bool is true
+         and borgbackup_install_from_pip | bool is true)"
+    fail_msg: "parameters 'borgbackup_install_from_apt'
+      and 'borgbackup_install_from_pip' cannot both set to 'true' same time"

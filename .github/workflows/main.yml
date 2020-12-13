@@ -32,3 +32,13 @@ jobs:
         uses: borisskert/molecule-action@v20.11.28
         with:
           arguments: test -s install-linux32
+
+      - name: Run 'install-from-pip' scenario tests
+        uses: borisskert/molecule-action@v20.11.28
+        with:
+          arguments: test -s install-from-pip
+
+      - name: Run 'install-specific-version-from-pip' scenario tests
+        uses: borisskert/molecule-action@v20.11.28
+        with:
+          arguments: test -s install-specific-version-from-pip

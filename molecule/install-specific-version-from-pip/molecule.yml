@@ -1,0 +1,67 @@
+---
+dependency:
+  name: galaxy
+
+lint: |
+  set -e
+  yamllint . --strict
+  ansible-lint
+
+driver:
+  name: docker
+
+platforms:
+  - name: ansible-borgbackup-focal
+    image: docker.io/borisskert/python3:focal
+    pull: true
+    pre_build_image: true
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    groups:
+      - docker
+  - name: ansible-borgbackup-bionic
+    image: docker.io/borisskert/python3:bionic
+    pull: true
+    pre_build_image: true
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    groups:
+      - docker
+  - name: ansible-borgbackup-xenial
+    image: docker.io/borisskert/python3:xenial
+    pull: true
+    pre_build_image: true
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    groups:
+      - docker
+  - name: ansible-borgbackup-buster
+    image: docker.io/borisskert/python3:buster
+    pull: true
+    pre_build_image: true
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    groups:
+      - docker
+      - debian
+  - name: ansible-borgbackup-stretch
+    image: docker.io/borisskert/python3:stretch
+    pull: true
+    pre_build_image: true
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    groups:
+      - docker
+      - debian
+
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      docker:
+        molecule_docker_environment: true
+      debian:
+        ansible_python_interpreter: /usr/bin/python3
+
+verifier:
+  name: ansible
