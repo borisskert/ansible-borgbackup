@@ -5,15 +5,15 @@
 
 - name: Set system fact
   set_fact:
-    system: linux64
+    borgbackup_system: "{{ borgbackup_os[ansible_architecture] }}"
 
 - name: Download bin file
   get_url:
     url:
       "https://github.com/borgbackup/borg/releases/\
-      download/{{ version_to_be_installed }}/borg-{{ system }}"
+      download/{{ borgbackup_version_to_be_installed }}/borg-{{ borgbackup_system }}"
     dest: "{{ borg_executible }}"
     mode: 0755
     force: true
-  when: installed_version is not defined
-    or version_to_be_installed != installed_version
+  when: borgbackup_installed_version is not defined
+    or borgbackup_version_to_be_installed != borgbackup_installed_version

@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Install 32-bit support  # https://askubuntu.com/a/133460
+      package:
+        name: lib32z1
+        state: present
+        update_cache: true

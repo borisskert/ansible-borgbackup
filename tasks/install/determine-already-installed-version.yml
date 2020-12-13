@@ -12,7 +12,7 @@
 
 - name: Try to parse installed version
   set_fact:
-    installed_version:
+    borgbackup_installed_version:
       "{{
       borg_installed_version.stdout
       | regex_search(regexp,'\\1')
@@ -23,9 +23,9 @@
   when: borg_installed_version.stdout is defined
 
 - debug:
-    msg: "Installed version: {{ installed_version }}"
-  when: installed_version is defined
+    msg: "Installed version: {{ borgbackup_installed_version }}"
+  when: borgbackup_installed_version is defined
 
 - debug:
     msg: "Installed version: <none>"
-  when: installed_version is not defined
+  when: borgbackup_installed_version is not defined

@@ -3,6 +3,7 @@
   package:
     name: git
     state: present
+    update_cache: true
 
 - name: Estimate latest version
   shell: |
@@ -19,8 +20,8 @@
 
 - name: Use estimated version
   set_fact:
-    latest_version: "{{ latest_borg_version.stdout }}"
+    borgbackup_latest_version: "{{ latest_borg_version.stdout }}"
 
 - debug:
-    msg: "Latest available version: {{ latest_version }}"
-  when: latest_version is defined
+    msg: "Latest available version: {{ borgbackup_latest_version }}"
+  when: borgbackup_latest_version is defined

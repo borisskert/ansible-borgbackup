@@ -9,22 +9,4 @@
       register: borg_version
       changed_when: false
       failed_when:
-        borg_version.stdout != 'borg 1.1.11'
-
-    - name: Should create local repo directory
-      stat:
-        path: /mnt/borgbackups/local_repo
-      register: local_repo_directory
-      failed_when: not local_repo_directory.stat.exists
-
-    - name: Should create local repo password file
-      stat:
-        path: /srv/borgbackup/repo_passphrase.txt
-      register: local_repo_password_file
-      failed_when: not local_repo_password_file.stat.exists
-
-    - name: Should create borgbackup script
-      stat:
-        path: /opt/borgbackup/borgbackup.bash
-      register: borgbackup_script
-      failed_when: not borgbackup_script.stat.exists
+        borg_version.stdout | regex_search('borg [0-9]+\.[0-9]+\.[0-9]+') | length < 1

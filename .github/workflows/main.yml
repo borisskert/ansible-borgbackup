@@ -18,7 +18,17 @@ jobs:
         with:
           path: "${{ github.repository }}"
 
-      - name: lint and test with molecule
-        uses: borisskert/molecule-action@v0.1
+      - name: Run default tests
+        uses: borisskert/molecule-action@v20.11.28
         with:
           arguments: test
+
+      - name: Run 'all-parameters' scenario tests
+        uses: borisskert/molecule-action@v20.11.28
+        with:
+          arguments: test -s all-parameters
+
+      - name: Run 'install-linux32' scenario tests
+        uses: borisskert/molecule-action@v20.11.28
+        with:
+          arguments: test -s install-linux32

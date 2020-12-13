@@ -5,7 +5,7 @@ dependency:
 driver:
   name: vagrant
   provider:
-    name: virtualbox
+    name: libvirt
 
 platforms:
   - name: ansible-borgbackup-focal
@@ -18,8 +18,8 @@ platforms:
 provisioner:
   name: ansible
   playbooks:
-    converge: ../default/converge.yml
-    verify: ../default/verify.yml
+    converge: ../all-parameters/converge.yml
+    verify: ../all-parameters/verify.yml
   inventory:
     group_vars:
       debian:

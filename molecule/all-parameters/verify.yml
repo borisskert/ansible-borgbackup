@@ -11,6 +11,36 @@
       failed_when:
         borg_version.stdout != 'borg 1.1.11'
 
+    - name: Install needed package  # https://unix.stackexchange.com/a/113587
+      package:
+        name: gnupg-curl
+      when: ansible_distribution_release == 'xenial'
+
+    - name: import public key
+      command: gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 9F88FB52FAF7B393
+      register: gpg_import
+      changed_when: false
+      failed_when: gpg_import.rc != 0
+      retries: 20
+      delay: 1
+      until: gpg_import is defined
+        and gpg_import.rc == 0
+
+    - name: download binary's signature
+      get_url:
+        url:
+          "https://github.com/borgbackup/borg/releases/\
+          download/1.1.11/borg-linux64.asc"
+        dest: /tmp/borg-linux.asc
+        mode: 0755
+        force: true
+
+    - name: check signature
+      command: gpg --verify /tmp/borg-linux.asc /usr/local/bin/borg
+      register: gpg_signature_check
+      changed_when: false
+      failed_when: gpg_signature_check.rc != 0
+
     - name: Should create local repo directory
       stat:
         path: /mnt/borgbackups/local_repo
@@ -35,6 +65,10 @@
         enabled: true
       register: borgbackup_service
       failed_when: borgbackup_service.changed
+      when: not (
+        molecule_docker_environment is defined
+        and molecule_docker_environment | bool
+        )
 
     - name: Should enable borgbackup timer
       systemd:
@@ -42,3 +76,7 @@
         enabled: true
       register: borgbackup_timer
       failed_when: borgbackup_timer.changed
+      when: not (
+        molecule_docker_environment is defined
+        and molecule_docker_environment | bool
+        )

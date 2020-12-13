@@ -1,0 +1,4 @@
+---
+borgbackup_os:
+  x86_64: linux64
+  i386: linux32

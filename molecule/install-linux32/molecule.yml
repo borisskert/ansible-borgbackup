@@ -57,6 +57,10 @@ platforms:
 provisioner:
   name: ansible
   inventory:
+    hosts:
+      all:
+        vars:
+          ansible_architecture: i386
     group_vars:
       docker:
         molecule_docker_environment: true
