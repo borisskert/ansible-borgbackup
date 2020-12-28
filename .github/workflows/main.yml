@@ -19,26 +19,26 @@ jobs:
           path: "${{ github.repository }}"
 
       - name: Run default tests
-        uses: borisskert/molecule-action@v20.11.28
+        uses: borisskert/molecule-action@v20.12.20
         with:
           arguments: test
 
       - name: Run 'all-parameters' scenario tests
-        uses: borisskert/molecule-action@v20.11.28
+        uses: borisskert/molecule-action@v20.12.20
         with:
           arguments: test -s all-parameters
 
       - name: Run 'install-linux32' scenario tests
-        uses: borisskert/molecule-action@v20.11.28
+        uses: borisskert/molecule-action@v20.12.20
         with:
           arguments: test -s install-linux32
 
       - name: Run 'install-from-pip' scenario tests
-        uses: borisskert/molecule-action@v20.11.28
+        uses: borisskert/molecule-action@v20.12.20
         with:
           arguments: test -s install-from-pip
 
       - name: Run 'install-specific-version-from-pip' scenario tests
-        uses: borisskert/molecule-action@v20.11.28
+        uses: borisskert/molecule-action@v20.12.20
         with:
           arguments: test -s install-specific-version-from-pip
