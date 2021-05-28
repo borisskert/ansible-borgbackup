@@ -1,0 +1,12 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Should provide borg executable
+      command: borg --version
+      register: borg_version
+      changed_when: false
+      failed_when:
+        borg_version.stdout != 'borg 1.1.16'

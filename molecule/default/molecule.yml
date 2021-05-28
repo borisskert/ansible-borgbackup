@@ -13,7 +13,6 @@ driver:
 platforms:
   - name: ansible-borgbackup-focal
     image: docker.io/borisskert/python3:focal
-    pull: true
     pre_build_image: true
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
@@ -21,7 +20,6 @@ platforms:
       - docker
   - name: ansible-borgbackup-bionic
     image: docker.io/borisskert/python3:bionic
-    pull: true
     pre_build_image: true
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
@@ -29,7 +27,6 @@ platforms:
       - docker
   - name: ansible-borgbackup-xenial
     image: docker.io/borisskert/python3:xenial
-    pull: true
     pre_build_image: true
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
@@ -37,7 +34,6 @@ platforms:
       - docker
   - name: ansible-borgbackup-buster
     image: docker.io/borisskert/python3:buster
-    pull: true
     pre_build_image: true
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
@@ -46,7 +42,6 @@ platforms:
       - debian
   - name: ansible-borgbackup-stretch
     image: docker.io/borisskert/python3:stretch
-    pull: true
     pre_build_image: true
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'

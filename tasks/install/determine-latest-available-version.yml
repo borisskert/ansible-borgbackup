@@ -22,6 +22,7 @@
   set_fact:
     borgbackup_latest_version: "{{ latest_borg_version.stdout }}"
 
-- debug:
+- name: Display latest available version
+  debug:
     msg: "Latest available version: {{ borgbackup_latest_version }}"
   when: borgbackup_latest_version is defined

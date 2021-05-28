@@ -17,7 +17,7 @@
 - name: Filter disabled repos
   set_fact:
     disabled_repos: >
-      {{borgbackup_repos
+      {{ borgbackup_repos
       | selectattr('disable_repo', 'defined')
       | selectattr('disable_repo', 'eq', True)
       | list

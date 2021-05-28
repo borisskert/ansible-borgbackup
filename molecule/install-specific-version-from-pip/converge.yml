@@ -3,7 +3,10 @@
   hosts: all
   become: true
 
-  roles:
-    - role: ansible-borgbackup
-      borgbackup_version: 1.1.11
-      borgbackup_install_from_pip: true
+  tasks:
+    - name: "Include ansible-borgbackup"
+      include_role:
+        name: "ansible-borgbackup"
+      vars:
+        borgbackup_version: 1.1.11
+        borgbackup_install_from_pip: true

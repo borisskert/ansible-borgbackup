@@ -12,7 +12,7 @@
     mode: 0755
   register: repo_creation
   with_items: >
-    {{borgbackup_repos
+    {{ borgbackup_repos
     | rejectattr('repo_path', 'regex', '^ssh://')
     | reject('in', disabled_repos)
     | list
@@ -20,7 +20,7 @@
 
 - include: create-repo.yml
   with_items: >
-    {{borgbackup_repos
+    {{ borgbackup_repos
     | reject('in', disabled_repos)
     | list
     }}

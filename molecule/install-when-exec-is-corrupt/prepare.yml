@@ -1,0 +1,14 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Prepare corrupt fake exec
+      copy:
+        content: |
+          #!/bin/bash
+          # Fake error exit code
+          exit 1
+        dest: /usr/local/bin/borg
+        mode: 0755

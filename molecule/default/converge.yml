@@ -3,5 +3,7 @@
   hosts: all
   become: true
 
-  roles:
-    - role: ansible-borgbackup
+  tasks:
+    - name: "Include ansible-borgbackup"
+      include_role:
+        name: "ansible-borgbackup"

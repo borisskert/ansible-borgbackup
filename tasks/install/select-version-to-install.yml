@@ -9,5 +9,6 @@
     borgbackup_version_to_be_installed: "{{ borgbackup_latest_version }}"
   when: borgbackup_version is not defined or borgbackup_version | length < 1
 
-- debug:
+- name: Display version planned to be installed
+  debug:
     msg: "Version planned to be installed: {{ borgbackup_version_to_be_installed }}"

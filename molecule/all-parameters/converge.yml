@@ -3,30 +3,33 @@
   hosts: all
   become: true
 
-  roles:
-    - role: ansible-borgbackup
-      borgbackup_version: 1.1.11
-      borgbackup_install_from_apt: false
-      borgbackup_working_directory: /srv/borgbackup
-      borgbackup_ignore_failing_repos: true
-      borgbackup_no_strict_host_key_checking: true
-      borgbackup_backup_devices:
-        - /dev/mapper/sdc_group-sdc_vol
-      borgbackup_repos:
-        - repo_path: /mnt/borgbackups/local_repo
-          encryption_mode: repokey
-          encryption_passphrase: "thi5 is-mY_p@5sphr4s3 for /etc"
-          passphrase_filename: repo_passphrase.txt
-          prune:
-            keep_within: 1d
-            keep_daily: 7
-            keep_weekly: 4
-            keep_monthly: 12
-          archives:
-            - name: etc-archive
-              compression_mode: lzma,4
-              paths:
-                - /etc
-                - /home
-                - /srv
-                - /root
+  tasks:
+    - name: "Include ansible-borgbackup"
+      include_role:
+        name: "ansible-borgbackup"
+      vars:
+        borgbackup_version: 1.1.11
+        borgbackup_install_from_apt: false
+        borgbackup_working_directory: /srv/borgbackup
+        borgbackup_ignore_failing_repos: true
+        borgbackup_no_strict_host_key_checking: true
+        borgbackup_backup_devices:
+          - /dev/mapper/sdc_group-sdc_vol
+        borgbackup_repos:
+          - repo_path: /mnt/borgbackups/local_repo
+            encryption_mode: repokey
+            encryption_passphrase: "thi5 is-mY_p@5sphr4s3 for /etc"
+            passphrase_filename: repo_passphrase.txt
+            prune:
+              keep_within: 1d
+              keep_daily: 7
+              keep_weekly: 4
+              keep_monthly: 12
+            archives:
+              - name: etc-archive
+                compression_mode: lzma,4
+                paths:
+                  - /etc
+                  - /home
+                  - /srv
+                  - /root
