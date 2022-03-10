@@ -19,11 +19,11 @@
       until: gpg_import is defined
         and gpg_import.rc == 0
 
-    - name: download binary's signature (32bit)
+    - name: download binary's signature
       get_url:
         url:
           "https://github.com/borgbackup/borg/releases/\
-          download/1.1.11/borg-linux32.asc"
+          download/1.2.0/borg-linuxold64.asc"
         dest: /tmp/borg-linux.asc
         mode: 0755
         force: true
@@ -34,7 +34,7 @@
       register: borg_version
       changed_when: false
       failed_when:
-        borg_version.stdout != 'borg 1.1.11'
+        borg_version.stdout != 'borg 1.2.0'
 
     - name: should have correct signature
       command: gpg --verify /tmp/borg-linux.asc /usr/local/bin/borg

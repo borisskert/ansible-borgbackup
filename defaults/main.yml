@@ -13,3 +13,5 @@ borgbackup_ignore_failing_repos: false
 borgbackup_no_strict_host_key_checking: false
 
 borgbackup_backup_devices: []
+
+borgbackup_linuxold: false

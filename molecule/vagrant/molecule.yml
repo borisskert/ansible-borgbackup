@@ -10,8 +10,8 @@ driver:
 platforms:
   - name: ansible-borgbackup-focal
     box: generic/ubuntu2004
-  - name: ansible-borgbackup-buster
-    box: generic/debian10
+  - name: ansible-borgbackup-bullseye
+    box: generic/debian11
     groups:
       - debian
 

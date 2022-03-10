@@ -27,5 +27,7 @@
     name: borgbackup
     state: latest  # noqa 403
     executable: pip3
+  environment:
+    BORG_OPENSSL_PREFIX: /
   when: borgbackup_version is not defined
     or borgbackup_version | length < 1

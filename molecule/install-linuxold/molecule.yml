@@ -18,8 +18,30 @@ platforms:
       - '/var/run/docker.sock:/var/run/docker.sock'
     groups:
       - docker
+  - name: ansible-borgbackup-bionic
+    image: docker.io/borisskert/python3:bionic
+    pre_build_image: true
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    groups:
+      - docker
+  - name: ansible-borgbackup-xenial
+    image: docker.io/borisskert/python3:xenial
+    pre_build_image: true
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    groups:
+      - docker
   - name: ansible-borgbackup-buster
     image: docker.io/borisskert/python3:buster
+    pre_build_image: true
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    groups:
+      - docker
+      - debian
+  - name: ansible-borgbackup-stretch
+    image: docker.io/borisskert/python3:stretch
     pre_build_image: true
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'

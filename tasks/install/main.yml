@@ -3,17 +3,8 @@
 - include: determine-latest-available-version.yml
 - include: select-version-to-install.yml
 
-- name: Set system fact
-  set_fact:
-    borgbackup_system: "{{ borgbackup_os[ansible_architecture] }}"
+- include: download_release.yml
+  when: not (borgbackup_linuxold | bool)
 
-- name: Download bin file
-  get_url:
-    url:
-      "https://github.com/borgbackup/borg/releases/\
-      download/{{ borgbackup_version_to_be_installed }}/borg-{{ borgbackup_system }}"
-    dest: "{{ borg_executible }}"
-    mode: 0755
-    force: true
-  when: borgbackup_installed_version is not defined
-    or borgbackup_version_to_be_installed != borgbackup_installed_version
+- include: download_linuxold_release.yml
+  when: borgbackup_linuxold | bool

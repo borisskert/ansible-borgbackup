@@ -16,45 +16,46 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 
 ## Parameters
 
-| Parameter name | Type  | Mandatory?  | Default value             | Description |
-|----------------|-------|-------------|---------------------------|-------------|
-| borgbackup_version        |       | no          | [empty] => latest version | Specifies the version of borg to be installed |
-| borgbackup_working_directory | absolute path | no, only if you specify repos with encryption enabled | `''`| Specifies the location where your passphrase files will be stored |
-| borgbackup_repos                     | array of `repo` | no                                                    | `[]`    | Specifies the repos for your backup                               |
-| borgbackup_ignore_failing_repos      | boolean         | no                                                    | `false`    | By default your ansible playbook will fail if a repo fails to be initialized. Setting this property to `True` will ignore and omit all failing repos |
-| borgbackup_no_strict_host_key_checking | boolean       | no                                                    | `false`    | You can disable ssh strict host key checking with setting this switch to `yes`                                                                       |
-| borgbackup_backup_devices              | array of texts | no                                                   | `[]`    | You can specify any backup drives which will be mounted before beackup and unmounted after (i. e. you can use USB drives)                            |
-| borgbackup_install_from_apt            | boolean        | no                                                   | `false`    | You can install the package `borgbackup` from `apt` if you wish                                                                                        |
-| borgbackup_install_from_pip            | boolean        | no                                                   | `false`    | You can install the package `borgbackup` from `pip` if you wish                                                                                        |
+| Parameter name                         | Type            | Mandatory?                                            | Default value             | Description                                                                                                                                          |
+|----------------------------------------|-----------------|-------------------------------------------------------|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| borgbackup_version                     |                 | no                                                    | [empty] => latest version | Specifies the version of borg to be installed                                                                                                        |
+| borgbackup_working_directory           | absolute path   | no, only if you specify repos with encryption enabled | `''`                      | Specifies the location where your passphrase files will be stored                                                                                    |
+| borgbackup_repos                       | array of `repo` | no                                                    | `[]`                      | Specifies the repos for your backup                                                                                                                  |
+| borgbackup_ignore_failing_repos        | boolean         | no                                                    | `false`                   | By default your ansible playbook will fail if a repo fails to be initialized. Setting this property to `True` will ignore and omit all failing repos |
+| borgbackup_no_strict_host_key_checking | boolean         | no                                                    | `false`                   | You can disable ssh strict host key checking with setting this switch to `yes`                                                                       |
+| borgbackup_backup_devices              | array of texts  | no                                                    | `[]`                      | You can specify any backup drives which will be mounted before beackup and unmounted after (i. e. you can use USB drives)                            |
+| borgbackup_install_from_apt            | boolean         | no                                                    | `false`                   | You can install the package `borgbackup` from `apt` if you wish                                                                                      |
+| borgbackup_install_from_pip            | boolean         | no                                                    | `false`                   | You can install the package `borgbackup` from `pip` if you wish                                                                                      |
+| borgbackup_linuxold                    | boolean         | no                                                    | `false`                   | Install `linuxold64` version for older linux versions (only if you don't install from `apt` and `pip`)                                               |
 
 ### Definition `repo`
 
-| Parameter name | Type  | Mandatory?  | Default value             | Description |
-|----------------|-------|-------------|---------------------------|-------------|
-| repo_path      | absolute path | yes | [empty]                   | Specifies the location of your repo. Also, ssh repos are supported. Make sure you have permissions to connect via ssh. |
-| encryption_mode | enum         | yes | [empty]                   | Specifies the encryption mode borg will use for this repo. Allowed: `repokey`, `repokey-blake2` |
-| encryption_passphrase | text   | yes | [empty]                   | Your secret passphrase for your encrypted repo                                                  |
-| passphrase_filename   | file_name | yes | [empty]                | Filename of your passphrase file stored in `borgbackup_working_directory`                          |
-| archives              | array of `archive` | yes | []            | The defined archives which will be stored in this repo                                          |
-| prune                 | `prune` object     | no  | {}            | Containing your prune settings for this repo (recommended!)                                     |
-| disable_repo          | boolean            | no  | no            | You can disable a repo with this switch                                                         |
+| Parameter name        | Type               | Mandatory? | Default value | Description                                                                                                            |
+|-----------------------|--------------------|------------|---------------|------------------------------------------------------------------------------------------------------------------------|
+| repo_path             | absolute path      | yes        | [empty]       | Specifies the location of your repo. Also, ssh repos are supported. Make sure you have permissions to connect via ssh. |
+| encryption_mode       | enum               | yes        | [empty]       | Specifies the encryption mode borg will use for this repo. Allowed: `repokey`, `repokey-blake2`                        |
+| encryption_passphrase | text               | yes        | [empty]       | Your secret passphrase for your encrypted repo                                                                         |
+| passphrase_filename   | file_name          | yes        | [empty]       | Filename of your passphrase file stored in `borgbackup_working_directory`                                              |
+| archives              | array of `archive` | yes        | []            | The defined archives which will be stored in this repo                                                                 |
+| prune                 | `prune` object     | no         | {}            | Containing your prune settings for this repo (recommended!)                                                            |
+| disable_repo          | boolean            | no         | no            | You can disable a repo with this switch                                                                                |
 
 ### Definition `archive`
 
-| Parameter name | Type  | Mandatory?  | Default value             | Description |
-|----------------|-------|-------------|---------------------------|-------------|
-| name           | text  | yes         | [empty]                   | Specified the name of your archive |
-| compression_mode | enum | no         | [empty]                   | Specified the compression mode and level. Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
-| paths            | array of absolute paths | yes | [empty]       | Specifies the paths which will be selected for backup into your archive. Specify at least one  |
+| Parameter name   | Type                    | Mandatory? | Default value | Description                                                                                                             |
+|------------------|-------------------------|------------|---------------|-------------------------------------------------------------------------------------------------------------------------|
+| name             | text                    | yes        | [empty]       | Specified the name of your archive                                                                                      |
+| compression_mode | enum                    | no         | [empty]       | Specified the compression mode and level. Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
+| paths            | array of absolute paths | yes        | [empty]       | Specifies the paths which will be selected for backup into your archive. Specify at least one                           |
 
 ### Definition `prune`
 
-| Parameter name | Type  | Mandatory?  | Default value             | Description |
-|----------------|-------|-------------|---------------------------|-------------|
-| keep_within    | text  | no          | [none]                    | Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
-| keep_daily     | integer | no        | [none]                    | Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
-| keep_weekly    | integer | no        | [none]                    | Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
-| keep_monthly   | integer | no        | [none]                    | Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
+| Parameter name  | Type    | Mandatory? | Default value             | Description                                                                   |
+|-----------------|---------|------------|---------------------------|-------------------------------------------------------------------------------|
+| keep_within     | text    | no         | [none]                    | Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
+| keep_daily      | integer | no         | [none]                    | Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
+| keep_weekly     | integer | no         | [none]                    | Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
+| keep_monthly    | integer | no         | [none]                    | Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
 
 ## Usage
 
@@ -87,6 +88,7 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
       borgbackup_version: 1.1.11
       borgbackup_install_from_apt: false
       borgbackup_install_from_pip: false
+      borgbackup_linuxold: false
       borgbackup_working_directory: /srv/borgbackup
       borgbackup_backup_devices:
         - /dev/my_drive
@@ -178,5 +180,5 @@ molecule test
  molecule test --scenario-name vagrant --parallel
 ```
 
-I recommend to use [pyenv](https://github.com/pyenv/pyenv) for local testing.
-Within the Github Actions pipeline I use [my own molecule Docker image](https://github.com/borisskert/docker-molecule).
+I recommend to use [pyenv](https://github.com/pyenv/pyenv) for local testing. Within the Github Actions pipeline I
+use [my own molecule Docker image](https://github.com/borisskert/docker-molecule).

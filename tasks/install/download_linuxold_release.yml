@@ -1,0 +1,11 @@
+---
+- name: Download bin file
+  get_url:
+    url:
+      "https://github.com/borgbackup/borg/releases/\
+      download/{{ borgbackup_version_to_be_installed }}/borg-linuxold64"
+    dest: "{{ borg_executible }}"
+    mode: 0755
+    force: true
+  when: borgbackup_installed_version is not defined
+    or borgbackup_version_to_be_installed != borgbackup_installed_version

@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  tasks:
+    - name: "Include ansible-borgbackup"
+      include_role:
+        name: "ansible-borgbackup"
+      vars:
+        borgbackup_version: 1.2.0
+        borgbackup_linuxold: true

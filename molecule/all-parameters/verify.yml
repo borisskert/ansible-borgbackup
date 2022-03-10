@@ -17,7 +17,7 @@
       when: ansible_distribution_release == 'xenial'
 
     - name: import public key
-      command: gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 9F88FB52FAF7B393
+      command: gpg --keyserver keyserver.ubuntu.com --recv-keys 9F88FB52FAF7B393
       register: gpg_import
       changed_when: false
       failed_when: gpg_import.rc != 0
