@@ -47,6 +47,7 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 | name             | text                    | yes        | [empty]       | Specified the name of your archive                                                                                      |
 | compression_mode | enum                    | no         | [empty]       | Specified the compression mode and level. Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
 | paths            | array of absolute paths | yes        | [empty]       | Specifies the paths which will be selected for backup into your archive. Specify at least one                           |
+| exclude          | array of `exclude`      | no         | [empty]       | Specifies the exclude configuration for your archive.                                                                   |
 
 ### Definition `prune`
 
@@ -56,6 +57,12 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 | keep_daily      | integer | no         | [none]                    | Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
 | keep_weekly     | integer | no         | [none]                    | Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
 | keep_monthly    | integer | no         | [none]                    | Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) |
+
+### Definition `exclude`
+
+| Parameter name | Type             | Mandatory? | Default value | Description                                                                                                             |
+|----------------|------------------|------------|---------------|-------------------------------------------------------------------------------------------------------------------------|
+| patterns       | array of strings | no         | [empty]       | Specifies the patterns which will be excluded from your archive. Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/create.html) |
 
 ## Usage
 
@@ -144,6 +151,12 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
                 - /home
                 - /srv
                 - /root
+              exclude:
+                patterns:
+                  - '*.tmp'
+                  - '*.log'
+                  - '*.swp'
+                  - '*.cache'
         - repo_path: ssh://disabled_user@disabled_server//borgbackup-test
           disable_repo: yes
           archives:
@@ -154,6 +167,12 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
                 - /home
                 - /srv
                 - /root
+              exclude:
+                patterns:
+                  - '*.tmp'
+                  - '*.log'
+                  - '*.swp'
+                  - '*.cache'
 ```
 
 ## Testing

@@ -33,3 +33,9 @@
                   - /home
                   - /srv
                   - /root
+                exclude:
+                  patterns:
+                    - '*.tmp'
+                    - '*.log'
+                    - '*.swp'
+                    - '*.cache'

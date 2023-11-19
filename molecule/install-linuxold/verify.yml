@@ -4,10 +4,10 @@
   become: true
 
   pre_tasks:
-    - name: install needed package  # https://unix.stackexchange.com/a/113587
-      package:
-        name: gnupg-curl
-      when: ansible_distribution_release == 'xenial'
+#    - name: install needed package  # https://unix.stackexchange.com/a/113587
+#      package:
+#        name: gnupg-curl
+#      when: ansible_distribution_release == 'xenial'
 
     - name: import public key
       command: gpg --keyserver keyserver.ubuntu.com --recv-keys 9F88FB52FAF7B393

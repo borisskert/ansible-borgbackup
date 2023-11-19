@@ -21,8 +21,14 @@ export BORG_PASSPHRASE=$(cat "{{borgbackup_working_directory}}/{{repo.passphrase
 {% if archive.compression_mode is defined and archive.compression_mode | length > 0 %}
             --compression {{archive.compression_mode}} \
 {% endif %}
+{% if archive.exclude is defined and archive.exclude.patterns is defined %}
+            {% for exclude_pattern in archive.exclude.patterns -%}
+            --exclude '{{exclude_pattern}}' \
+            {% endfor %}
+{% endif -%}
             {{repo.repo_path}}::{{archive.name}}-`date +%s` \
             {% for path in archive.paths %}"{{path}}" {% endfor %}
+
 
 {% if repo.prune is defined %}
 {{borg_executible}} prune \
