@@ -18,7 +18,7 @@
     | list
     }}
 
-- include: create-repo.yml
+- include_tasks: create-repo.yml
   with_items: >
     {{ borgbackup_repos
     | reject('in', disabled_repos)

@@ -1,10 +1,10 @@
 ---
-- include: determine-already-installed-version.yml
-- include: determine-latest-available-version.yml
-- include: select-version-to-install.yml
+- include_tasks: determine-already-installed-version.yml
+- include_tasks: determine-latest-available-version.yml
+- include_tasks: select-version-to-install.yml
 
-- include: download_release.yml
+- include_tasks: download_release.yml
   when: not (borgbackup_linuxold | bool)
 
-- include: download_linuxold_release.yml
+- include_tasks: download_linuxold_release.yml
   when: borgbackup_linuxold | bool

@@ -2,3 +2,10 @@
 borgbackup_os:
   x86_64: linux64
   i386: linux32
+
+borgbackup_glibc:
+  noble: glibc236
+  jammy: glibc231
+  focal: glibc228
+  bookworm: glibc231
+  bullseye: glibc228
