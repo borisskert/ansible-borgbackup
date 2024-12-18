@@ -1,14 +1,14 @@
 # ansible-borgbackup
 
-Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
+Installs [borg backup](https://www.borgbackup.org) and set up a systemd service.
 
 ## System requirements
 
-* Systemd (if you want to setup a service)
+* Systemd (if you want to set up a service)
 
 ## What this role does
 
-* Installs borg from the [borg Github repo](https://github.com/borgbackup/borg)
+* Installs borg from the [borg GitHub repo](https://github.com/borgbackup/borg)
 * Create passphrase files
 * Template backup script
 * Create systemd service
@@ -60,8 +60,8 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 
 ### Definition `exclude`
 
-| Parameter name | Type             | Mandatory? | Default value | Description                                                                                                             |
-|----------------|------------------|------------|---------------|-------------------------------------------------------------------------------------------------------------------------|
+| Parameter name | Type             | Mandatory? | Default value | Description                                                                                                                                     |
+|----------------|------------------|------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | patterns       | array of strings | no         | [empty]       | Specifies the patterns which will be excluded from your archive. Read the [docs](https://borgbackup.readthedocs.io/en/stable/usage/create.html) |
 
 ## Usage
@@ -92,7 +92,7 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 
   roles:
     - role: setup-borgbackup
-      borgbackup_version: 1.1.11
+      borgbackup_version: 1.4.0
       borgbackup_install_from_apt: false
       borgbackup_install_from_pip: false
       borgbackup_linuxold: false
@@ -180,7 +180,7 @@ Installs [borg backup](https://www.borgbackup.org) and setup a systemd service.
 Requirements:
 
 * [Vagrant](https://www.vagrantup.com/)
-* [VirtualBox](https://www.virtualbox.org/)
+* [libvirt](https://libvirt.org/)
 * [Ansible](https://docs.ansible.com/)
 * [Molecule](https://molecule.readthedocs.io/en/latest/index.html)
 * [yamllint](https://yamllint.readthedocs.io/en/stable/#)
@@ -199,5 +199,5 @@ molecule test
  molecule test --scenario-name vagrant --parallel
 ```
 
-I recommend to use [pyenv](https://github.com/pyenv/pyenv) for local testing. Within the Github Actions pipeline I
-use [my own molecule Docker image](https://github.com/borisskert/docker-molecule).
+I recommend to use [pyenv](https://github.com/pyenv/pyenv) for local testing. Within the GitHub Actions pipeline I
+use [my own molecule action](https://github.com/borisskert/molecule-action).
