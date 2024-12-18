@@ -9,4 +9,3 @@
         name: "ansible-borgbackup"
       vars:
         borgbackup_version: 1.2.8
-        borgbackup_install_from_pip: true

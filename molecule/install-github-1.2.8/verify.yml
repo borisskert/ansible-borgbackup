@@ -9,4 +9,4 @@
       register: borg_version
       changed_when: false
       failed_when:
-        borg_version.stdout | regex_search('borg [0-9]+\.[0-9]+\.[0-9]+') | length < 1
+        borg_version.stdout | regex_search('borg 1.2.8') | length < 1
