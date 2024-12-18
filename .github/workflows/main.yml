@@ -14,36 +14,56 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: "${{ github.repository }}"
 
       - name: Run default tests
-        uses: borisskert/molecule-action@v21.04.29
+        uses: borisskert/molecule-action@v24.12.9
         with:
           arguments: test
 
       - name: Run 'all-parameters' scenario tests
-        uses: borisskert/molecule-action@v21.04.29
+        uses: borisskert/molecule-action@v24.12.9
         with:
           arguments: test -s all-parameters
 
       - name: Run 'install-linux32' scenario tests
-        uses: borisskert/molecule-action@v21.04.29
+        uses: borisskert/molecule-action@v24.12.9
         with:
           arguments: test -s install-linux32
 
+      - name: Run 'install-linuxold' scenario tests
+        uses: borisskert/molecule-action@v24.12.9
+        with:
+          arguments: test -s install-linuxold
+
+      - name: Run 'install-github-1.1.18' scenario tests
+        uses: borisskert/molecule-action@v24.12.9
+        with:
+          arguments: test -s install-github-1.1.18
+
+      - name: Run 'install-github-1.2.8' scenario tests
+        uses: borisskert/molecule-action@v24.12.9
+        with:
+          arguments: test -s install-github-1.2.8
+
+      - name: Run 'install-github-1.4.0' scenario tests
+        uses: borisskert/molecule-action@v24.12.9
+        with:
+          arguments: test -s install-github-1.4.0
+
       - name: Run 'install-from-pip' scenario tests
-        uses: borisskert/molecule-action@v21.04.29
+        uses: borisskert/molecule-action@v24.12.9
         with:
           arguments: test -s install-from-pip
 
       - name: Run 'install-specific-version-from-pip' scenario tests
-        uses: borisskert/molecule-action@v21.04.29
+        uses: borisskert/molecule-action@v24.12.9
         with:
           arguments: test -s install-specific-version-from-pip
 
       - name: Run 'install-when-exec-is-corrupt' scenario tests
-        uses: borisskert/molecule-action@v21.04.29
+        uses: borisskert/molecule-action@v24.12.9
         with:
           arguments: test -s install-when-exec-is-corrupt

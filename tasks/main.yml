@@ -1,17 +1,17 @@
 ---
-- include: validation/check-parameters.yml
+- include_tasks: validation/check-parameters.yml
   no_log: false
 
-- include: install/main.yml
+- include_tasks: install/main.yml
   when: not (
     borgbackup_install_from_apt | bool
     or borgbackup_install_from_pip | bool
     )
 
-- include: install-from-apt/main.yml
+- include_tasks: install-from-apt/main.yml
   when: borgbackup_install_from_apt | bool
 
-- include: install-from-pip/main.yml
+- include_tasks: install-from-pip/main.yml
   when: borgbackup_install_from_pip | bool
 
 - name: Filter disabled repos
@@ -23,10 +23,10 @@
       | list
       }}
 
-- include: repo-creation/create-repos.yml
+- include_tasks: repo-creation/create-repos.yml
   when: borgbackup_repos is defined and borgbackup_repos | length > 0
 
-- include: setup-private-passphrase-file.yml
+- include_tasks: setup-private-passphrase-file.yml
   with_items: >
     {{borgbackup_repos
     | reject('in', disabled_repos)
@@ -34,10 +34,10 @@
     }}
   when: borgbackup_repos is defined and borgbackup_repos | length > 0
 
-- include: setup-borgbackup-script.yml
+- include_tasks: setup-borgbackup-script.yml
   when: borgbackup_repos is defined and borgbackup_repos | length > 0
 
-- include: setup-systemd-service.yml
+- include_tasks: setup-systemd-service.yml
   when: borgbackup_repos is defined and borgbackup_repos | length > 0
 
 - name: Start systemd-managed docker containers

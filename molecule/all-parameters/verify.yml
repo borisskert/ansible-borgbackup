@@ -3,18 +3,13 @@
   hosts: all
   become: true
 
-  tasks:
-    - name: Should provide borg executable
-      command: borg --version
-      register: borg_version
-      changed_when: false
-      failed_when:
-        borg_version.stdout != 'borg 1.1.11'
-
-#    - name: Install needed package for xenial  # https://unix.stackexchange.com/a/113587
-#      package:
-#        name: gnupg-curl
-#      when: ansible_distribution_release == 'xenial'
+  pre_tasks:
+    - name: Install gpg on Debian-based systems
+      package:
+        name: gnupg
+        state: present
+        update_cache: true
+      when: ansible_distribution == 'Debian'
 
     - name: Import public key
       command: gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 9F88FB52FAF7B393
@@ -24,16 +19,25 @@
       retries: 20
       delay: 1
       until: gpg_import is defined
-        and gpg_import.rc == 0
+        and (gpg_import.rc == 0
+        or gpg_import.rc == 2) # No such file or directory
 
     - name: Download binary's signature
       get_url:
         url:
           "https://github.com/borgbackup/borg/releases/\
-          download/1.1.11/borg-linux64.asc"
+        download/1.1.11/borg-linux64.asc"
         dest: /tmp/borg-linux.asc
         mode: 0755
         force: true
+
+  tasks:
+    - name: Should provide borg executable
+      command: borg --version
+      register: borg_version
+      changed_when: false
+      failed_when:
+        borg_version.stdout != 'borg 1.1.11'
 
     - name: Check signature
       command: gpg --verify /tmp/borg-linux.asc /usr/local/bin/borg

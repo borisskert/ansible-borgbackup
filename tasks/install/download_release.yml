@@ -2,8 +2,9 @@
 - name: Set system fact
   set_fact:
     borgbackup_system: "{{ borgbackup_os[ansible_architecture] }}"
+    borgbackup_glibc: "{{ borgbackup_glibc[ansible_distribution_release] }}"
 
-- name: Download bin file
+- name: Download bin file (deprecated)
   get_url:
     url:
       "https://github.com/borgbackup/borg/releases/\
@@ -13,3 +14,19 @@
     force: true
   when: borgbackup_installed_version is not defined
     or borgbackup_version_to_be_installed != borgbackup_installed_version
+  register: download_bin_file
+  failed_when: download_bin_file.status_code != 200
+    and download_bin_file.status_code != 404
+
+- name: Download bin file
+  get_url:
+    url:
+      "https://github.com/borgbackup/borg/releases/\
+      download/{{ borgbackup_version_to_be_installed }}/borg-linux-{{ borgbackup_glibc }}"
+    dest: "{{ borg_executible }}"
+    mode: 0755
+    force: true
+  when: (borgbackup_installed_version is not defined
+    or borgbackup_version_to_be_installed != borgbackup_installed_version)
+    and download_bin_file.status_code != 200
+    and download_bin_file.status_code == 404

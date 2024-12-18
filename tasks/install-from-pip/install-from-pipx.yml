@@ -1,0 +1,39 @@
+---
+- name: Install dependencies
+  apt:
+    name:
+      - pipx
+      - cython3
+      - libssl-dev  # needed for borgbackup
+      - libacl1-dev  # needed for borgbackup
+      - liblz4-dev  # needed for borgbackup
+      - libzstd-dev  # needed for borgbackup
+      - libxxhash-dev  # needed for borgbackup
+    update_cache: true
+
+- name: Install pipx package by specified version
+  community.general.pipx:
+    name: "borgbackup=={{ borgbackup_version }}"
+    state: present
+    executable: pipx
+  when: borgbackup_version is defined
+    and borgbackup_version | length > 0
+  changed_when: false
+
+- name: Install latest pipx package
+  community.general.pipx:
+    name: borgbackup
+    state: latest  # noqa 403
+    executable: pipx
+  environment:
+    BORG_OPENSSL_PREFIX: /
+  when: borgbackup_version is not defined
+    or borgbackup_version | length < 1
+  changed_when: false
+
+- name: Setup link to borg executable
+  file:
+    src: /root/.local/bin/borg
+    dest: /usr/local/bin/borg
+    state: link
+    force: yes

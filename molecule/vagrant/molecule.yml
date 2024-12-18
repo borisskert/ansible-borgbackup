@@ -8,10 +8,18 @@ driver:
     name: virtualbox
 
 platforms:
+  - name: ansible-borgbackup-noble
+    box: cloud-image/ubuntu-24.04
+  - name: ansible-borgbackup-jammy
+    box: cloud-image/ubuntu-22.04
   - name: ansible-borgbackup-focal
-    box: generic/ubuntu2004
+    box: cloud-image/ubuntu-20.04
+  - name: ansible-borgbackup-bookworm
+    box: cloud-image/debian-12
+    groups:
+      - debian
   - name: ansible-borgbackup-bullseye
-    box: generic/debian11
+    box: cloud-image/debian-11
     groups:
       - debian
 

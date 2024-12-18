@@ -4,22 +4,25 @@
   become: true
 
   pre_tasks:
-#    - name: install needed package  # https://unix.stackexchange.com/a/113587
-#      package:
-#        name: gnupg-curl
-#      when: ansible_distribution_release == 'xenial'
+    - name: Install gpg on Debian-based systems
+      package:
+        name: gnupg
+        state: present
+        update_cache: true
+      when: ansible_distribution == 'Debian'
 
-    - name: import public key
-      command: gpg --keyserver keyserver.ubuntu.com --recv-keys 9F88FB52FAF7B393
+    - name: Import public key
+      command: gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 9F88FB52FAF7B393
       register: gpg_import
       changed_when: false
       failed_when: gpg_import.rc != 0
       retries: 20
       delay: 1
       until: gpg_import is defined
-        and gpg_import.rc == 0
+        and (gpg_import.rc == 0
+        or gpg_import.rc == 2) # No such file or directory
 
-    - name: download binary's signature
+    - name: Download binary's signature
       get_url:
         url:
           "https://github.com/borgbackup/borg/releases/\
@@ -29,14 +32,14 @@
         force: true
 
   tasks:
-    - name: should provide borg executable
+    - name: Should provide borg executable
       command: borg --version
       register: borg_version
       changed_when: false
       failed_when:
         borg_version.stdout != 'borg 1.2.0'
 
-    - name: should have correct signature
+    - name: Should have correct signature
       command: gpg --verify /tmp/borg-linux.asc /usr/local/bin/borg
       register: gpg_signature_check
       changed_when: false

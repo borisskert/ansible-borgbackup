@@ -49,12 +49,12 @@
       - "repo.archives | length > 0"
     fail_msg: "parameter 'repo.archives' is missing or empty"
 
-- include: check-archive-parameters.yml
+- include_tasks: check-archive-parameters.yml
   loop: "{{ repo.archives }}"
   loop_control:
     loop_var: archive
 
-- include: check-prune-parameters.yml
+- include_tasks: check-prune-parameters.yml
   vars:
     prune: "{{ repo.prune }}"
   when: repo.prune is defined
